@@ -11,6 +11,7 @@ subtitle: "Evaluating the Impact of Traffic Safety Interventions on Pedestrian C
 library(tidyverse)
 library(here)
 library(gt)
+library(gtsummary)
 library(scales)
 
 # 2. LOAD DATA
@@ -114,8 +115,16 @@ ggplot(interventions_by_year, aes(x = first_year, y = num_intersections)) +
 We used a negative binomial regression model to estimate the effect of each of the nine interventions on the annual count of pedestrian casualties, controlling for factors like traffic volume and population density. The results, presented as Incidence Rate Ratios (IRR), are shown below. An IRR below 1.0 indicates a reduction in casualties (a protective effect), while an IRR above 1.0 suggests an increase.
 
 ```{r table-results, echo=FALSE, warning=FALSE, message=FALSE}
-regression_results %>%
-  arrange(IRR) %>% # Sort by effect size for easier interpretation
+# Step 1: Manually format the P-Value column using the robust `scales::pvalue()` function.
+results_formatted <- regression_results %>%
+  mutate(
+    # The `add_p = FALSE` argument removes the "p=" prefix for a cleaner look
+    P_Value_Formatted = scales::pvalue(P_Value, accuracy = 0.001, add_p = FALSE)
+  )
+
+# Step 2: Build the table.
+results_formatted %>%
+  arrange(IRR) %>%
   gt() %>%
   tab_header(
     title = "Table 3: Regression Results for VZ Interventions",
@@ -126,27 +135,24 @@ regression_results %>%
     IRR = md("**IRR**"),
     CI_Lower = "95% CI Lower",
     CI_Upper = "95% CI Upper",
-    P_Value = md("**P-Value**")
+    P_Value_Formatted = md("**P-Value**")
   ) %>%
   fmt_number(
     columns = c(IRR, CI_Lower, CI_Upper),
     decimals = 2
   ) %>%
-  # Custom formatting for p-values to show "< 0.01" for significant results
-  fmt_pvalue(columns = P_Value, rows = P_Value < 0.01) %>%
   tab_footnote(
     footnote = "An Incidence Rate Ratio (IRR) < 1 indicates a protective effect.",
     locations = cells_column_labels(columns = IRR)
   ) %>%
-  # Color the IRR column to visually highlight protective vs. adverse effects
   data_color(
     columns = IRR,
     colors = scales::col_numeric(
-      palette = c("#2c7bb6", "white", "#d7191c"), # Blue-White-Red palette
-      domain = c(0.8, 1.2) # Center the color scale around 1.0
+      palette = c("#2c7bb6", "white", "#d7191c"),
+      domain = c(0.8, 1.2)
     )
   ) %>%
-  # Highlight significant rows
+  # This will now work because the original numeric `P_Value` column is still available.
   tab_style(
     style = list(
       cell_fill(color = "lightyellow")
@@ -155,6 +161,8 @@ regression_results %>%
       rows = P_Value <= 0.05
     )
   ) %>%
+  # **THE FIX**: Hide the original numeric P_Value column AFTER we are done using it.
+  cols_hide(columns = P_Value) %>%
   opt_table_font(font = "sans-serif") %>%
   tab_options(
     table.border.top.color = "white",
@@ -162,5 +170,6 @@ regression_results %>%
     column_labels.border.bottom.width = px(2)
   )
 ```
+
 
 

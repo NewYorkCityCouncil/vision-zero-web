@@ -1,0 +1,82 @@
+/* =================================================== */
+/* General Body & Layout Styling                     */
+/* =================================================== */
+
+body {
+  font-family: sans-serif; /* Use a clean, default sans-serif font */
+  line-height: 1.6;        /* Increase line spacing for better readability */
+  color: #333333;           /* Use a dark gray for text instead of pure black */
+}
+
+/* =================================================== */
+/* Typography: Headings & Links                      */
+/* =================================================== */
+
+/* Style for the main page title (H1) */
+h1.title {
+  font-size: 2.8em;        /* Make the main title large and impactful */
+  font-weight: 700;
+  color: #2c3e50;         /* A professional dark slate blue */
+  border-bottom: 2px solid #e0e0e0; /* A subtle line below the title */
+  padding-bottom: 0.3em;
+  margin-bottom: 1em;
+}
+
+/* Style for section headings (H2, H3) */
+h2, h3 {
+  color: #2c3e50;
+  font-weight: 600;
+  margin-top: 2em; /* Add space above headings to separate sections */
+}
+
+/* Style for links */
+a {
+  color: #2980b9; /* A nice, clear blue for links */
+  text-decoration: none; /* Remove underlines from links */
+}
+
+a:hover {
+  text-decoration: underline; /* Add underline back on hover for clarity */
+}
+
+/* =================================================== */
+/* Content: Tables & Plots                           */
+/* =================================================== */
+
+/* The 'gt' package styles its own tables very well.
+   CSS is generally not needed unless you want to override something specific.
+   This rule helps center the table container if it doesn't take up the full width. */
+div.gt_container {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Add a subtle border and shadow to containers for plots and tables */
+/* This makes them stand out visually from the text */
+.quarto-figure {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  padding: 1em;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  background-color: #fdfdfd;
+}
+
+/* =================================================== */
+/* Mobile Specific Adjustments                       */
+/* =================================================== */
+
+@media (max-width: 767px) {
+  /* On smaller screens (like phones)... */
+
+  /* Reduce the size of the main title to prevent it from being too large */
+  h1.title {
+    font-size: 2.0em;
+  }
+
+  /* Reduce the font size of section headings */
+  h2 {
+    font-size: 1.5em;
+  }
+}

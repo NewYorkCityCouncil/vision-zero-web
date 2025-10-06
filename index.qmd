@@ -115,55 +115,78 @@ ggplot(interventions_by_year, aes(x = first_year, y = num_intersections)) +
 We used a negative binomial regression model to estimate the effect of each of the nine interventions on the annual count of pedestrian casualties, controlling for factors like traffic volume and population density. The results, presented as Incidence Rate Ratios (IRR), are shown below. An IRR below 1.0 indicates a reduction in casualties (a protective effect), while an IRR above 1.0 suggests an increase.
 
 ```{r table-results, echo=FALSE, warning=FALSE, message=FALSE}
-# Step 1: Manually format the P-Value column using the robust `scales::pvalue()` function.
-results_formatted <- regression_results %>%
+# Step 1: Create the new, more detailed data frame and pre-format the % change CI
+regression_results_detailed <- tibble::tribble(
+  ~Intervention, ~IRR, ~CI_Lower, ~CI_Upper, ~P_Value,
+  "Street Improvement Project Intersection", 1.118, 0.958, 1.305, 0.156,
+  "25 MPH Signal Retiming", 1.071, 1.026, 1.118, 0.002,
+  "Leading Pedestrian Interval Signal", 1.042, 0.992, 1.095, 0.102,
+  "Enhanced Crossing", 1.000, 0.765, 1.308, 0.999,
+  "Street Improvement Project Corridor", 0.951, 0.909, 0.995, 0.029,
+  "Citywide Speed Limit Reduction", 0.945, 0.900, 0.992, 0.021,
+  "Speed Hump", 0.885, 0.815, 0.962, 0.004,
+  "Turn Traffic Calming", 0.856, 0.779, 0.941, 0.001,
+  "Neighborhood Slow Zone", 0.816, 0.691, 0.964, 0.017
+) %>%
+  # Calculate the "% Change" and manually create the formatted CI string
   mutate(
-    # The `add_p = FALSE` argument removes the "p=" prefix for a cleaner look
-    P_Value_Formatted = scales::pvalue(P_Value, accuracy = 0.001, add_p = FALSE)
+    Percent_Change = (IRR - 1),
+    # THE FIX IS HERE:
+    CI_Percent_Formatted = paste0(
+      "[",
+      scales::percent((CI_Lower - 1), accuracy = 0.1),
+      ", ",
+      scales::percent((CI_Upper - 1), accuracy = 0.1),
+      "]"
+    )
   )
 
-# Step 2: Build the table.
-results_formatted %>%
-  arrange(IRR) %>%
+# Step 2: Build the gt table with the new data
+regression_results_detailed %>%
   gt() %>%
   tab_header(
-    title = "Table 3: Regression Results for VZ Interventions",
-    subtitle = "Effect on Annual Pedestrian Casualties"
+    title = "Impact of VZ Interventions on Pedestrian Casualties"
   ) %>%
-  cols_label(
-    Intervention = md("**VZ Intervention**"),
-    IRR = md("**IRR**"),
-    CI_Lower = "95% CI Lower",
-    CI_Upper = "95% CI Upper",
-    P_Value_Formatted = md("**P-Value**")
-  ) %>%
+  # Format numbers
   fmt_number(
-    columns = c(IRR, CI_Lower, CI_Upper),
+    columns = c(IRR, P_Value),
+    decimals = 3
+  ) %>%
+  fmt_percent(
+    columns = Percent_Change,
     decimals = 2
   ) %>%
-  tab_footnote(
-    footnote = "An Incidence Rate Ratio (IRR) < 1 indicates a protective effect.",
-    locations = cells_column_labels(columns = IRR)
+  # Merge the IRR CI column
+  cols_merge_range(
+    col_begin = CI_Lower,
+    col_end = CI_Upper,
+    sep = ", "
   ) %>%
-  data_color(
-    columns = IRR,
-    colors = scales::col_numeric(
-      palette = c("#2c7bb6", "white", "#d7191c"),
-      domain = c(0.8, 1.2)
-    )
+  # Label the columns for the final display
+  cols_label(
+    Intervention = "Intervention",
+    IRR = "IRR",
+    CI_Lower = "95% CI for IRR",
+    Percent_Change = "% Change",
+    # Label our new pre-formatted column
+    CI_Percent_Formatted = "95% CI for % Change",
+    P_Value = "p-value"
   ) %>%
-  # This will now work because the original numeric `P_Value` column is still available.
+  # --- CONDITIONAL ROW STYLING (Unchanged) ---
   tab_style(
-    style = list(
-      cell_fill(color = "lightyellow")
-    ),
-    locations = cells_body(
-      rows = P_Value <= 0.05
-    )
+    style = list(cell_fill(color = "#e6f5e6"), cell_text(weight = "bold")),
+    locations = cells_body(rows = IRR < 1 & P_Value <= 0.05)
   ) %>%
-  # **THE FIX**: Hide the original numeric P_Value column AFTER we are done using it.
-  cols_hide(columns = P_Value) %>%
-  opt_table_font(font = "sans-serif") %>%
+  tab_style(
+    style = list(cell_fill(color = "#fee0e2"), cell_text(weight = "bold")),
+    locations = cells_body(rows = IRR > 1 & P_Value <= 0.05)
+  ) %>%
+  tab_style(
+    style = list(cell_fill(color = "#f7f7f7")),
+    locations = cells_body(rows = P_Value > 0.05)
+  ) %>%
+  # Final table aesthetics
+  cols_width(Intervention ~ px(300)) %>%
   tab_options(
     table.border.top.color = "white",
     column_labels.border.bottom.color = "black",

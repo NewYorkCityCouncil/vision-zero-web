@@ -1,0 +1,36 @@
+project:
+  type: website
+  output-dir: docs 
+
+website:
+  title: "NYC Vision Zero Analysis" 
+  search: false 
+  navbar:
+    title: "Evaluating NYC's Vision Zero" 
+    pinned: true 
+    background: light 
+    tools:
+      - icon: github
+        href: "https://github.com/NewYorkCityCouncil/vision-zero-web.git" 
+        aria-label: GitHub
+    left:
+      - text: "Home"
+        href: index.qmd # Links to your main homepage
+        
+format:
+  html:
+    theme: cosmo 
+    css: styles.css 
+    toc: true 
+    toc-depth: 3 
+    grid:
+      body-width: 1100px 
+      
+editor: visual
+
+
+
+
+
+
+

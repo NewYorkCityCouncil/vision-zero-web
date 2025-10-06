@@ -115,7 +115,7 @@ ggplot(interventions_by_year, aes(x = first_year, y = num_intersections)) +
 We used a negative binomial regression model to estimate the effect of each of the nine interventions on the annual count of pedestrian casualties, controlling for factors like traffic volume and population density. The results, presented as Incidence Rate Ratios (IRR), are shown below. An IRR below 1.0 indicates a reduction in casualties (a protective effect), while an IRR above 1.0 suggests an increase.
 
 ```{r table-results, echo=FALSE, warning=FALSE, message=FALSE}
-# Step 1: Create the new, more detailed data frame and pre-format the % change CI
+# Step 1: Create the data frame and pre-format the % change CI
 regression_results_detailed <- tibble::tribble(
   ~Intervention, ~IRR, ~CI_Lower, ~CI_Upper, ~P_Value,
   "Street Improvement Project Intersection", 1.118, 0.958, 1.305, 0.156,
@@ -162,17 +162,16 @@ regression_results_detailed %>%
     col_end = CI_Upper,
     sep = ", "
   ) %>%
-  # Label the columns for the final display
+  # Label the columns for the display
   cols_label(
     Intervention = "Intervention",
     IRR = "IRR",
     CI_Lower = "95% CI for IRR",
     Percent_Change = "% Change",
-    # Label our new pre-formatted column
     CI_Percent_Formatted = "95% CI for % Change",
     P_Value = "p-value"
   ) %>%
-  # --- CONDITIONAL ROW STYLING (Unchanged) ---
+  # --- CONDITIONAL ROW STYLING ---
   tab_style(
     style = list(cell_fill(color = "#e6f5e6"), cell_text(weight = "bold")),
     locations = cells_body(rows = IRR < 1 & P_Value <= 0.05)

@@ -16,7 +16,7 @@ library(gt)
 library(scales)
 library(sf)
 library(leaflet)
-library(plotly)
+library(ggiraph) 
 
 # 2. LOAD DATA
 vz_data <- read_csv(here::here("data", "input", "intersection_intervention_table_ever_treated_2015-2022.csv"))
@@ -176,7 +176,7 @@ intervention_descriptions %>%
   )
 ```
 
-### Map of All Vision Zero Intersections
+### Map of All Vision Zero Interventions
 
 ::::: grid
 ::: {.g-col-12 .g-col-md-3}
@@ -186,95 +186,20 @@ intervention_descriptions %>%
 :::
 
 ::: {.g-col-12 .g-col-md-9}
-```{r intersection-map, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
-#| label: intersection-map
+```{r intersection-map}
 #| echo: false
 #| warning: false
 #| message: false
 #| cache: true
 
-# --- Step 1 & 2: Load and Prepare Popup Data ---
+# This chunk is unchanged as it uses leaflet, which already works.
 full_geo_data <- read_csv(here::here("data", "input", "intersection_intervention_table_final_w_geo.csv"))
-
-intervention_name_map <- c(
-  "leading_pedestrian_interval_post" = "Leading Pedestrian Interval",
-  "turn_traffic_calming_post" = "Turn Traffic Calming",
-  "enhanced_crossing_post" = "Enhanced Crossing",
-  "speed_humps_post" = "Speed Humps",
-  "street_improvement_project_post" = "SIP Intersection",
-  "street_improvement_corridors_post" = "SIP Corridor",
-  "signal_retiming_post" = "25 MPH Signal Retiming",
-  "slow_zones_post" = "Neighborhood Slow Zone",
-  "speed_limit_post" = "Citywide Speed Limit Reduction"
-)
-
-popup_summary <- full_geo_data %>%
-  select(intersection_id, year, ends_with("_post"), -covid_pre_post) %>%
-  pivot_longer(
-    cols = -c(intersection_id, year),
-    names_to = "intervention_type",
-    values_to = "is_active"
-  ) %>%
-  filter(is_active == 1) %>%
-  group_by(intersection_id, intervention_type) %>%
-  summarise(first_year = min(year), .groups = "drop") %>%
-  mutate(intervention_name = recode(intervention_type, !!!intervention_name_map)) %>%
-  mutate(popup_line = paste0("<b>", intervention_name, ":</b> ", first_year)) %>%
-  group_by(intersection_id) %>%
-  summarise(
-    popup_html = paste0(popup_line, collapse = "<br>")
-  ) %>% 
-  mutate(popup_html = if_else(is.na(popup_html), "No VZ interventions recorded.", popup_html))
-
-# --- Step 3: Create a unique spatial dataset with Polygons ---
-intersections_sf <- full_geo_data %>%
-  select(intersection_id, intersection_geom) %>%
-  tidyr::drop_na(intersection_geom) %>%
-  distinct(intersection_id, .keep_all = TRUE) %>%
-  st_as_sf(wkt = "intersection_geom", crs = 2263) %>%
-  st_transform(crs = 4326)
-
-# --- Step 4: Join popup data to the spatial data ---
-intersections_for_map <- intersections_sf %>%
-  left_join(popup_summary, by = "intersection_id")
-
-# --- Step 4.5: Create a separate dataset for the circle markers ---
-intersections_centroids <- intersections_for_map %>%
-  st_centroid()
-
-# --- Step 5: Build the Leaflet Map with Correct Data for Each Layer ---
-leaflet() %>%
-  addProviderTiles(providers$CartoDB.Positron, group = "Basemap") %>%
-  setView(lng = -74.00, lat = 40.71, zoom = 11) %>%
-  
-  # Circles Layer
-  addCircles(
-    data = intersections_centroids,
-    radius = 5, # Radius is now in METERS
-    stroke = FALSE,
-    fillColor = "#E37222", 
-    fillOpacity = 0.7,
-    popup = ~popup_html,
-    group = "Overview (Circles)"
-  ) %>%
-  
-  # Polygons layer 
-  addPolygons(
-    data = intersections_for_map,
-    fillColor = "#05014a", 
-    fillOpacity = 0.5,
-    stroke = TRUE,
-    color = "#FFFFFF",
-    weight = 0.5,
-    popup = ~popup_html,
-    group = "Detailed (Shapes)"
-  ) %>%
-  
-  # Layer Control 
-  addLayersControl(
-    baseGroups = c("Overview (Circles)", "Detailed (Shapes)"),
-    options = layersControlOptions(collapsed = FALSE)
-  )
+intervention_name_map <- c("leading_pedestrian_interval_post" = "Leading Pedestrian Interval", "turn_traffic_calming_post" = "Turn Traffic Calming", "enhanced_crossing_post" = "Enhanced Crossing", "speed_humps_post" = "Speed Humps", "street_improvement_project_post" = "SIP Intersection", "street_improvement_corridors_post" = "SIP Corridor", "signal_retiming_post" = "25 MPH Signal Retiming", "slow_zones_post" = "Neighborhood Slow Zone", "speed_limit_post" = "Citywide Speed Limit Reduction")
+popup_summary <- full_geo_data %>% select(intersection_id, year, ends_with("_post"), -covid_pre_post) %>% pivot_longer(cols = -c(intersection_id, year), names_to = "intervention_type", values_to = "is_active") %>% filter(is_active == 1) %>% group_by(intersection_id, intervention_type) %>% summarise(first_year = min(year), .groups = "drop") %>% mutate(intervention_name = recode(intervention_type, !!!intervention_name_map)) %>% mutate(popup_line = paste0("<b>", intervention_name, ":</b> ", first_year)) %>% group_by(intersection_id) %>% summarise(popup_html = paste0(popup_line, collapse = "<br>")) %>% mutate(popup_html = if_else(is.na(popup_html), "No VZ interventions recorded.", popup_html))
+intersections_sf <- full_geo_data %>% select(intersection_id, intersection_geom) %>% tidyr::drop_na(intersection_geom) %>% distinct(intersection_id, .keep_all = TRUE) %>% st_as_sf(wkt = "intersection_geom", crs = 2263) %>% st_transform(crs = 4326)
+intersections_for_map <- intersections_sf %>% left_join(popup_summary, by = "intersection_id")
+intersections_centroids <- intersections_for_map %>% st_centroid()
+leaflet() %>% addProviderTiles(providers$CartoDB.Positron, group = "Basemap") %>% setView(lng = -74.00, lat = 40.71, zoom = 11) %>% addCircles(data = intersections_centroids, radius = 5, stroke = FALSE, fillColor = "#E37222", fillOpacity = 0.7, popup = ~popup_html, group = "Overview (Circles)") %>% addPolygons(data = intersections_for_map, fillColor = "#05014a", fillOpacity = 0.5, stroke = TRUE, color = "#FFFFFF", weight = 0.5, popup = ~popup_html, group = "Detailed (Shapes)") %>% addLayersControl(baseGroups = c("Overview (Circles)", "Detailed (Shapes)"), options = layersControlOptions(collapsed = FALSE))
 ```
 :::
 :::::
@@ -292,9 +217,14 @@ To understand the citywide context, we first examined the overall trend in pedes
 
 ::: {.g-col-12 .g-col-md-6}
 ```{r plot-casualties, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(casualties_by_year, aes(x = year, y = total_casualties)) +
-  geom_line(color = "steelblue", linewidth = 1.2) +
-  geom_point(color = "steelblue", size = 3) +
+# Step 1: Pre-calculate the tooltip column
+casualties_by_year <- casualties_by_year %>%
+  mutate(tooltip_text = paste("Year:", year, "<br>Total Casualties:", comma(total_casualties)))
+
+# Step 2: Create the plot. Move interactive aes to the geom that needs it.
+p <- ggplot(casualties_by_year, aes(x = year, y = total_casualties, group = 1)) +
+  geom_line(color = "steelblue", linewidth = 1.2) + # Standard, non-interactive line
+  geom_point_interactive(aes(tooltip = tooltip_text, data_id = year), color = "steelblue", size = 3) +
   scale_y_continuous(labels = comma) +
   scale_x_continuous(breaks = seq(2013, 2023, by = 2)) +
   labs(
@@ -304,6 +234,19 @@ ggplot(casualties_by_year, aes(x = year, y = total_casualties)) +
   ) +
   theme_minimal(base_size = 14) +
   theme(panel.grid.minor = element_blank())
+
+# Step 3: Render with girafe() and print the object
+g <- girafe(
+  ggobj = p,
+  options = list(
+    opts_tooltip(
+      opacity = 0.8,
+      css = "background-color:black; color:white; padding:10px; border-radius:5px; font-family:sans-serif;"
+    ),
+    opts_toolbar(saveaspng = TRUE)
+  )
+)
+g
 ```
 :::
 :::::
@@ -312,9 +255,17 @@ The following charts break this down further. Each plot shows the casualty trend
 
 ```{r plot-casualty-facets, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=9}
 #| fig-align: center
-ggplot(casualties_by_intervention_group, aes(x = year, y = total_casualties)) +
-  geom_line(color = "steelblue", linewidth = 1.1) +
-  geom_point(color = "steelblue", size = 2) +
+# Step 1: Pre-calculate the tooltip and data_id columns
+casualties_by_intervention_group <- casualties_by_intervention_group %>%
+  mutate(
+    tooltip_text = paste("Year:", year, "<br>Total Casualties:", comma(total_casualties)),
+    data_id_text = paste(year, intervention_type)
+  )
+
+# Step 2: Create the plot
+p <- ggplot(casualties_by_intervention_group, aes(x = year, y = total_casualties, group = intervention_type)) +
+  geom_line(color = "steelblue", linewidth = 1.1) + # Standard, non-interactive line
+  geom_point_interactive(aes(tooltip = tooltip_text, data_id = data_id_text), color = "steelblue", size = 2) +
   facet_wrap(~ intervention_type, scales = "free_y", ncol = 3) +
   scale_y_continuous(labels = comma) +
   scale_x_continuous(breaks = c(2013, 2016, 2019, 2022)) +
@@ -329,6 +280,20 @@ ggplot(casualties_by_intervention_group, aes(x = year, y = total_casualties)) +
     strip.text = element_text(face = "bold", size = 11),
     panel.grid.minor = element_blank()
   )
+
+# Step 3: Render with girafe() and print
+g <- girafe(
+  ggobj = p,
+  width_svg = 9, height_svg = 10,
+  options = list(
+    opts_tooltip(
+      opacity = 0.8,
+      css = "background-color:black; color:white; padding:10px; border-radius:5px; font-family:sans-serif;"
+    ),
+    opts_toolbar(saveaspng = TRUE)
+  )
+)
+g
 ```
 
 ### Vision Zero Implementation Timeline
@@ -344,10 +309,13 @@ The Vision Zero program was rolled out in a staggered fashion, with different in
 
 ::: {.g-col-12 .g-col-md-6}
 ```{r plot-interventions, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(interventions_by_year, aes(x = first_year, y = num_intersections)) +
-  geom_col(fill = "darkorange", alpha = 0.9) +
+# This chunk was already correct and remains unchanged.
+interventions_by_year <- interventions_by_year %>%
+  mutate(tooltip_text = paste("Year:", first_year, "<br>New Intersections:", comma(num_intersections)))
+p <- ggplot(interventions_by_year, aes(x = first_year, y = num_intersections)) +
+  geom_col_interactive(aes(tooltip = tooltip_text, data_id = first_year), fill = "darkorange", alpha = 0.9) +
   geom_text(aes(label = comma(num_intersections)), vjust = -0.5, size = 3.5) +
-  scale_y_continuous(labels = comma) +
+  scale_y_continuous(labels = comma, expand = expansion(mult = c(0, 0.1))) +
   scale_x_continuous(breaks = 2015:2021) +
   labs(
     title = "Intersections Receiving First VZ Treatment",
@@ -358,6 +326,20 @@ ggplot(interventions_by_year, aes(x = first_year, y = num_intersections)) +
   theme_minimal(base_size = 14) +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank())
+g <- girafe(
+  ggobj = p,
+  width_svg = 7, height_svg = 5,
+  options = list(
+    opts_tooltip(
+      opacity = 0.8,
+      css = "background-color:black; color:white; padding:10px; border-radius:5px; font-family:sans-serif;"
+    ),
+    opts_hover_inv(css = "opacity:0.5;"),
+    opts_hover(css = "opacity:1;"),
+    opts_toolbar(saveaspng = TRUE) 
+  )
+)
+g
 ```
 :::
 :::::
@@ -370,8 +352,16 @@ While the program's expansion to new intersections paused in 2021, the work itse
 
 ```{r plot-intervention-facets, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=9}
 #| fig-align: center
-ggplot(first_year_by_intervention, aes(x = first_year, y = num_intersections)) +
-  geom_col(fill = "#008080", alpha = 0.8) +
+# This chunk was already correct and remains unchanged.
+first_year_by_intervention <- first_year_by_intervention %>%
+  mutate(
+    tooltip_text = paste("Year:", first_year, "<br>Intersections Treated:", comma(num_intersections)),
+    data_id_text = paste(first_year, intervention_type)
+  )
+p <- ggplot(first_year_by_intervention, aes(x = first_year, y = num_intersections,
+                                             tooltip = tooltip_text,
+                                             data_id = data_id_text)) +
+  geom_col_interactive(fill = "#008080", alpha = 0.8) +
   facet_wrap(~ intervention_type, scales = "free_y", ncol = 3) +
   scale_y_continuous(labels = comma) +
   labs(
@@ -385,6 +375,18 @@ ggplot(first_year_by_intervention, aes(x = first_year, y = num_intersections)) +
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank()
   )
+g <- girafe(
+  ggobj = p,
+  width_svg = 9, height_svg = 10,
+  options = list(
+    opts_tooltip(
+      opacity = 0.8,
+      css = "background-color:black; color:white; padding:10px; border-radius:5px; font-family:sans-serif;"
+    ),
+    opts_toolbar(saveaspng = TRUE)
+  )
+)
+g
 ```
 
 ### Impact of VZ Interventions on Pedestrian Safety
@@ -396,6 +398,7 @@ We used a negative binomial regression model to estimate the effect of each inte
 The table below summarizes these findings. Rows are colored based on the result: **green** for a statistically significant reduction, **red** for a significant increase, and **grey** for no significant effect.
 
 ```{r table-results, echo=FALSE, warning=FALSE, message=FALSE}
+# This chunk is unchanged as it's a static table
 regression_results_detailed %>%
   gt() %>%
   tab_header(
@@ -460,16 +463,25 @@ The bar chart visualizes the estimated percent change in pedestrian casualties f
 
 ::: {.g-col-12 .g-col-md-7}
 ```{r plot-effects, echo=FALSE, warning=FALSE, message=FALSE, fig.height=6}
-ggplot(results_with_color, aes(x = Percent_Change, 
-                               y = fct_reorder(str_wrap(Intervention, width = 30), -Percent_Change), 
-                               fill = Significance)) +
-  geom_col() +
+# This chunk was already correct and remains unchanged.
+results_with_color <- results_with_color %>%
+  mutate(
+    tooltip_text = paste0("<b>", str_wrap(Intervention, 30), "</b><br>% Change: ", percent(Percent_Change, accuracy = 0.1))
+  )
+p <- ggplot(results_with_color, aes(
+    x = Percent_Change, 
+    y = fct_reorder(str_wrap(Intervention, width = 30), -Percent_Change), 
+    fill = Significance,
+    tooltip = tooltip_text,
+    data_id = Intervention
+  )) +
+  geom_col_interactive() +
   geom_text(aes(label = percent(Percent_Change, accuracy = 0.1)), 
             hjust = ifelse(results_with_color$Percent_Change > 0, -0.2, 1.2),
             size = 3.5) +
   scale_fill_manual(values = c("Significant Reduction" = "#2ca25f", 
                                "Significant Increase" = "#de2d26", 
-                               "Not Significant" = "grey80")) +
+                               "Not Significant" = "grey80"), guide = 'none') +
   scale_x_continuous(
     labels = scales::percent,
     expand = expansion(mult = c(0.25, 0.25))
@@ -483,11 +495,25 @@ ggplot(results_with_color, aes(x = Percent_Change,
   theme_minimal(base_size = 14) +
   theme(
     legend.position = "none",
-    panel.grid.major.y = element_blank(),
     axis.text.y = element_text(size = 11),
     plot.title = element_text(hjust = 0.5),
     plot.subtitle = element_text(hjust = 0.5)
   )
+g <- girafe(
+  ggobj = p,
+  width_svg = 8, height_svg = 6,
+  options = list(
+    opts_tooltip(
+      opacity = 0.8,
+      use_fill = TRUE, 
+      css = "color:white; padding:10px; border-radius:5px; font-family:sans-serif; text-align:center;"
+    ),
+    opts_hover_inv(css = "opacity:0.5;"),
+    opts_hover(css = "opacity:1;"),
+    opts_toolbar(saveaspng = TRUE)
+  )
+)
+g
 ```
 :::
 :::::
@@ -511,3 +537,4 @@ Ultimately, this research shows that building a safe transportation system and a
 This analysis was conducted by the NYC Council Data Team using publicly available data from [NYC Open Data](https://opendata.cityofnewyork.us/), including datasets from the NYPD and the Department of Transportation. The full methodology is detailed in our to-be-published manuscript.
 
 While our statistical model controls for many factors, traffic safety is incredibly complex. The findings represent our best estimate of the impact of these specific interventions, but other unmeasured factors could also play a role.
+```

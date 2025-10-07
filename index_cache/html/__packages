@@ -13,3 +13,5 @@ gt
 scales
 sf
 leaflet
+plotly
+ggiraph

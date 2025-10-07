@@ -1,82 +1,145 @@
 /* =================================================== */
-/* General Body & Layout Styling                     */
+/* General & Typography Styling                      */
 /* =================================================== */
+
+:root {
+  --accent-color: #05014a; /* Your professional navy blue */
+  --positive-color: #e6f5e6;
+  --negative-color: #fee0e2;
+}
 
 body {
-  font-family: sans-serif; /* Use a clean, default sans-serif font */
-  line-height: 1.6;        /* Increase line spacing for better readability */
-  color: #333333;           /* Use a dark gray for text instead of pure black */
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #333333;
 }
 
-/* =================================================== */
-/* Typography: Headings & Links                      */
-/* =================================================== */
-
-/* Style for the main page title (H1) */
-h1.title {
-  font-size: 2.8em;        /* Make the main title large and impactful */
+h3 {
+  color: var(--accent-color);
   font-weight: 700;
-  color: #2c3e50;         /* A professional dark slate blue */
-  border-bottom: 2px solid #e0e0e0; /* A subtle line below the title */
-  padding-bottom: 0.3em;
-  margin-bottom: 1em;
+  font-size: 2.2rem;
+  margin-top: 4rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.5rem;
 }
 
-/* Style for section headings (H2, H3) */
-h2, h3 {
-  color: #2c3e50;
-  font-weight: 600;
-  margin-top: 2em; /* Add space above headings to separate sections */
-}
-
-/* Style for links */
 a {
-  color: #2980b9; /* A nice, clear blue for links */
-  text-decoration: none; /* Remove underlines from links */
+  color: var(--accent-color);
+  text-decoration: none;
 }
-
 a:hover {
-  text-decoration: underline; /* Add underline back on hover for clarity */
+  text-decoration: underline;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: #ddd;
+  width: 50%;
+  margin: 4rem auto;
 }
 
 /* =================================================== */
-/* Content: Tables & Plots                           */
+/* Banner Styling                                    */
 /* =================================================== */
 
-/* The 'gt' package styles its own tables very well.
-   CSS is generally not needed unless you want to override something specific.
-   This rule helps center the table container if it doesn't take up the full width. */
+#title-block-header {
+  margin-block-end: 5rem;
+}
+
+.quarto-title-banner {
+  height: 450px;
+  background-size: cover;
+  background-position: center center;
+}
+
+#title-block-header .quarto-title-banner .title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.65);
+  padding: 0.5em 0.75em;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+#title-block-header .quarto-title-banner .subtitle {
+  font-size: 1.5rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.65);
+  padding: 0.5em 0.75em;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 1em;
+}
+
+/* =================================================== */
+/* Key Findings Callout Box                          */
+/* =================================================== */
+
+/* NEW: Style the callout box to look better as a sidebar */
+.callout-note {
+  background-color: #f8f9fa; /* Light grey background */
+  border-left: 5px solid var(--accent-color);
+  padding: 1em 1.5em !important;
+}
+
+.callout.callout-style-default .callout-body {
+    font-size: 1rem; /* Slightly smaller font for the sidebar */
+    line-height: 1.6;
+    text-align: left;
+}
+
+.callout.callout-style-default .callout-header {
+    font-size: 1.4rem; /* Adjusted header size */
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+}
+
+.key-finding {
+  margin-bottom: 1rem;
+}
+
+.key-finding .fas {
+  margin-right: 10px;
+  font-size: 1.2em;
+}
+
+.fa-check-circle { color: #2ca25f; }
+.fa-times-circle { color: #de2d26; }
+.fa-minus-circle { color: #737373; }
+
+/* =================================================== */
+/* Content: Tables, Plots & Layouts                  */
+/* =================================================== */
+
+/* 
+   THIS BLOCK WAS THE PROBLEM AND HAS BEEN REMOVED.
+   The flex properties were overriding default text alignment within columns.
+.quarto-layout-panel > .quarto-layout-row > .quarto-layout-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+*/
+
 div.gt_container {
     margin-left: auto;
     margin-right: auto;
-}
-
-/* Add a subtle border and shadow to containers for plots and tables */
-/* This makes them stand out visually from the text */
-.quarto-figure {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  padding: 1em;
-  margin-top: 2em;
-  margin-bottom: 2em;
-  background-color: #fdfdfd;
 }
 
 /* =================================================== */
 /* Mobile Specific Adjustments                       */
 /* =================================================== */
 
-@media (max-width: 767px) {
-  /* On smaller screens (like phones)... */
-
-  /* Reduce the size of the main title to prevent it from being too large */
-  h1.title {
-    font-size: 2.0em;
+@media (max-width: 768px) {
+  .quarto-title-banner {
+    height: 300px;
   }
-
-  /* Reduce the font size of section headings */
-  h2 {
-    font-size: 1.5em;
+  #title-block-header .quarto-title-banner .title {
+    font-size: 2.5rem;
+  }
+  h3 {
+    font-size: 1.8rem;
   }
 }

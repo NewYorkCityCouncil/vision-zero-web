@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>An Analysis of NYC’s Vision Zero Program – NYC Vision Zero Analysis</title>
+<title>An Analysis of NYC’s Vision Zero Program – City Council</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,6 +24,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="./favicon_logo.png" rel="icon" type="image/png">
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -33,7 +34,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-4e7e94036ba68e418c31d9a5cecddd9a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-5bd24cd827f68ee09e6f638ff606760f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -49,6 +50,14 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner {
+        background-image: url(images/nyc-banner.jpg);
+background-size: cover;
+      }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -57,12 +66,12 @@ ul.task-list li input[type="checkbox"] {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Evaluating NYC’s Vision Zero</span>
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./full-council-logo.png" alt="" class="navbar-logo">
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -71,86 +80,100 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link" href="https://www.nyc.gov/content/visionzero/pages/"> 
+<span class="menu-text">Official VZ Page</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.nyc.gov/content/visionzero/pages/open-data"> 
+<span class="menu-text">Data &amp; Reports</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
-    <a href="https://github.com/NewYorkCityCouncil/vision-zero-web.git" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
+    <a href="https://x.com/NYCCouncilData" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-twitter"></i></a>
+    <a href="https://github.com/NewYorkCityCouncil/" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-github"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page">
+      <h1 class="title">An Analysis of NYC’s Vision Zero Program</h1>
+            <p class="subtitle lead">Rachel Avram, Danylo Orlov, Melissa Nuñez, Alaa Moussawi, NYCC Data Team</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#vision-zero-in-new-york-city" id="toc-vision-zero-in-new-york-city" class="nav-link active" data-scroll-target="#vision-zero-in-new-york-city">Vision Zero in New York City</a></li>
-  <li><a href="#what-are-the-vision-zero-interventions" id="toc-what-are-the-vision-zero-interventions" class="nav-link" data-scroll-target="#what-are-the-vision-zero-interventions">What Are the Vision Zero Interventions?</a></li>
-  <li><a href="#citywide-pedestrian-casualty-trends" id="toc-citywide-pedestrian-casualty-trends" class="nav-link" data-scroll-target="#citywide-pedestrian-casualty-trends">Citywide Pedestrian Casualty Trends</a></li>
-  <li><a href="#vision-zero-implementation-timeline" id="toc-vision-zero-implementation-timeline" class="nav-link" data-scroll-target="#vision-zero-implementation-timeline">Vision Zero Implementation Timeline</a></li>
-  <li><a href="#intervention-specific-rollout" id="toc-intervention-specific-rollout" class="nav-link" data-scroll-target="#intervention-specific-rollout">Intervention-Specific Rollout</a></li>
-  <li><a href="#impact-of-vz-interventions-on-pedestrian-safety" id="toc-impact-of-vz-interventions-on-pedestrian-safety" class="nav-link" data-scroll-target="#impact-of-vz-interventions-on-pedestrian-safety">Impact of VZ Interventions on Pedestrian Safety</a></li>
-  <li><a href="#ranking-intervention-effectiveness" id="toc-ranking-intervention-effectiveness" class="nav-link" data-scroll-target="#ranking-intervention-effectiveness">Ranking Intervention Effectiveness</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul>
-</nav>
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">An Analysis of NYC’s Vision Zero Program</h1>
-<p class="subtitle lead">Evaluating the Impact of Traffic Safety Interventions on Pedestrian Casualties (2013-2023)</p>
-</div>
+<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
 
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
 
 
-</header>
-
-
-<section id="vision-zero-in-new-york-city" class="level3">
-<h3 class="anchored" data-anchor-id="vision-zero-in-new-york-city">Vision Zero in New York City</h3>
-<p>Motor vehicle crashes are a leading cause of death and injury in New York City (NYC). In 2014, the city adopted the <strong>Vision Zero (VZ)</strong> framework, a comprehensive strategy to eliminate all traffic-related fatalities. The program uses a multi-faceted approach, including infrastructure redesign, lower speed limits, and public awareness campaigns. This analysis evaluates the impact of nine distinct street-level interventions on pedestrian casualties. The study examines data from 2013 to 2023, focusing specifically on intersections that received treatments between 2015 and 2021. This approach ensures that every intervention can be evaluated with at least two years of ‘before’ data and two years of ‘after’ data, allowing for a robust comparison.</p>
+<div class="grid">
+<section id="evaluating-the-impact-of-traffic-safety-interventions-on-pedestrian-casualties-2013-2023" class="level1 g-col-12 g-col-md-8">
+<h1>Evaluating the Impact of Traffic Safety Interventions on Pedestrian Casualties (2013-2023)</h1>
+<p>Vision Zero in New York City Motor vehicle crashes are a leading cause of death and injury in New York City (NYC). In 2014, the city adopted the Vision Zero (VZ) framework, a comprehensive strategy to eliminate all traffic-related fatalities. The program uses a multi-faceted approach, including infrastructure redesign, lower speed limits, and public awareness campaigns. This analysis evaluates the impact of nine distinct street-level interventions on pedestrian casualties (deaths and injuries combined). The study uses a robust statistical model to analyze data from 9,562 intersections between 2013 and 2023, isolating the effect of each intervention while controlling for other factors like traffic volume and population density.</p>
 </section>
+<div class="g-col-12 g-col-md-4">
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Key Findings</p>
+<div class="key-finding">
+<p><i class="fas fa-check-circle"></i> <strong>Speed is Key</strong> <br> Interventions that physically slow traffic, like <strong>Neighborhood Slow Zones (-18%)</strong>, were most effective.</p>
+</div>
+<div class="key-finding">
+<p><i class="fas fa-times-circle"></i> <strong>Unintended Harm</strong> <br> <strong>Signal Retiming</strong> to improve vehicle flow was linked to a <strong>7% increase</strong> in casualties.</p>
+</div>
+<div class="key-finding">
+<p><i class="fas fa-minus-circle"></i> <strong>Mixed Results</strong> <br> Other common treatments showed no significant citywide impact on pedestrian safety.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <section id="what-are-the-vision-zero-interventions" class="level3">
 <h3 class="anchored" data-anchor-id="what-are-the-vision-zero-interventions">What Are the Vision Zero Interventions?</h3>
 <p>The analysis focuses on nine key physical and regulatory changes made to NYC streets. The table below provides a brief description of each intervention.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="bpodawfnfj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bpodawfnfj table {
+<div id="wplegwswym" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#wplegwswym table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#bpodawfnfj thead, #bpodawfnfj tbody, #bpodawfnfj tfoot, #bpodawfnfj tr, #bpodawfnfj td, #bpodawfnfj th {
+#wplegwswym thead, #wplegwswym tbody, #wplegwswym tfoot, #wplegwswym tr, #wplegwswym td, #wplegwswym th {
   border-style: none;
 }
 
-#bpodawfnfj p {
+#wplegwswym p {
   margin: 0;
   padding: 0;
 }
 
-#bpodawfnfj .gt_table {
+#wplegwswym .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -176,12 +199,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_caption {
+#wplegwswym .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#bpodawfnfj .gt_title {
+#wplegwswym .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -193,7 +216,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#bpodawfnfj .gt_subtitle {
+#wplegwswym .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -205,7 +228,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#bpodawfnfj .gt_heading {
+#wplegwswym .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -217,13 +240,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_bottom_border {
+#wplegwswym .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_col_headings {
+#wplegwswym .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -238,7 +261,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_col_heading {
+#wplegwswym .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -258,7 +281,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#bpodawfnfj .gt_column_spanner_outer {
+#wplegwswym .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -270,15 +293,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#bpodawfnfj .gt_column_spanner_outer:first-child {
+#wplegwswym .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#bpodawfnfj .gt_column_spanner_outer:last-child {
+#wplegwswym .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#bpodawfnfj .gt_column_spanner {
+#wplegwswym .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -290,11 +313,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#bpodawfnfj .gt_spanner_row {
+#wplegwswym .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#bpodawfnfj .gt_group_heading {
+#wplegwswym .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -320,7 +343,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#bpodawfnfj .gt_empty_group_heading {
+#wplegwswym .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -335,15 +358,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#bpodawfnfj .gt_from_md > :first-child {
+#wplegwswym .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#bpodawfnfj .gt_from_md > :last-child {
+#wplegwswym .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#bpodawfnfj .gt_row {
+#wplegwswym .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -362,7 +385,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#bpodawfnfj .gt_stub {
+#wplegwswym .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -375,7 +398,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpodawfnfj .gt_stub_row_group {
+#wplegwswym .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -389,15 +412,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#bpodawfnfj .gt_row_group_first td {
+#wplegwswym .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#bpodawfnfj .gt_row_group_first th {
+#wplegwswym .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#bpodawfnfj .gt_summary_row {
+#wplegwswym .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -407,16 +430,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpodawfnfj .gt_first_summary_row {
+#wplegwswym .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_first_summary_row.thick {
+#wplegwswym .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#bpodawfnfj .gt_last_summary_row {
+#wplegwswym .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -426,7 +449,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_grand_summary_row {
+#wplegwswym .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -436,7 +459,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpodawfnfj .gt_first_grand_summary_row {
+#wplegwswym .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -446,7 +469,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_last_grand_summary_row_top {
+#wplegwswym .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -456,11 +479,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_striped {
+#wplegwswym .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#bpodawfnfj .gt_table_body {
+#wplegwswym .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -469,7 +492,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_footnotes {
+#wplegwswym .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -483,7 +506,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_footnote {
+#wplegwswym .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -492,7 +515,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpodawfnfj .gt_sourcenotes {
+#wplegwswym .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -506,7 +529,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#bpodawfnfj .gt_sourcenote {
+#wplegwswym .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -514,72 +537,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#bpodawfnfj .gt_left {
+#wplegwswym .gt_left {
   text-align: left;
 }
 
-#bpodawfnfj .gt_center {
+#wplegwswym .gt_center {
   text-align: center;
 }
 
-#bpodawfnfj .gt_right {
+#wplegwswym .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#bpodawfnfj .gt_font_normal {
+#wplegwswym .gt_font_normal {
   font-weight: normal;
 }
 
-#bpodawfnfj .gt_font_bold {
+#wplegwswym .gt_font_bold {
   font-weight: bold;
 }
 
-#bpodawfnfj .gt_font_italic {
+#wplegwswym .gt_font_italic {
   font-style: italic;
 }
 
-#bpodawfnfj .gt_super {
+#wplegwswym .gt_super {
   font-size: 65%;
 }
 
-#bpodawfnfj .gt_footnote_marks {
+#wplegwswym .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#bpodawfnfj .gt_asterisk {
+#wplegwswym .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#bpodawfnfj .gt_indent_1 {
+#wplegwswym .gt_indent_1 {
   text-indent: 5px;
 }
 
-#bpodawfnfj .gt_indent_2 {
+#wplegwswym .gt_indent_2 {
   text-indent: 10px;
 }
 
-#bpodawfnfj .gt_indent_3 {
+#wplegwswym .gt_indent_3 {
   text-indent: 15px;
 }
 
-#bpodawfnfj .gt_indent_4 {
+#wplegwswym .gt_indent_4 {
   text-indent: 20px;
 }
 
-#bpodawfnfj .gt_indent_5 {
+#wplegwswym .gt_indent_5 {
   text-indent: 25px;
 }
 
-#bpodawfnfj .katex-display {
+#wplegwswym .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#bpodawfnfj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#wplegwswym div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -651,7 +674,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="citywide-pedestrian-casualty-trends" class="level3">
 <h3 class="anchored" data-anchor-id="citywide-pedestrian-casualty-trends">Citywide Pedestrian Casualty Trends</h3>
-<p>The plot below shows the total annual count of pedestrian casualties (deaths and injuries) across all 9,562 intersections included in our study sample. A notable drop is visible in 2020, likely corresponding to changes in traffic patterns during the COVID-19 pandemic.</p>
+<p>To understand the citywide context, we first examined the overall trend in pedestrian casualties across all 9,562 intersections in our study.</p>
+<div class="grid">
+<div class="g-col-12 g-col-md-6">
+<ul>
+<li><p><strong>The number of pedestrian casualties showed a general downward trend</strong> over the study period, with a sharp, anomalous drop in 2020. This dip corresponds to the major changes in traffic patterns and pedestrian activity during the first year of the COVID-19 pandemic.</p></li>
+<li><p><strong>While casualties rebounded after 2020, they remained below pre-pandemic levels</strong>, suggesting that Vision Zero initiatives may be contributing to a sustained, long-term improvement in pedestrian safety.</p></li>
+</ul>
+</div>
+<div class="g-col-12 g-col-md-6">
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -661,12 +692,14 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<p>The following charts break this down further. Each plot shows the casualty trend for a specific subgroup of intersections: those that <strong>ever</strong> received a particular type of intervention at any point during the study period. This helps to visualize the trends within different intervention cohorts.</p>
-<div class="cell">
+</div>
+</div>
+<p>The following charts break this down further. Each plot shows the casualty trend for intersections that <strong>ever</strong> received a particular type of intervention. This helps visualize trends within specific treatment groups and reveals that the overall citywide pattern is largely consistent across different intervention types.</p>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/plot-casualty-facets-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="index_files/figure-html/plot-casualty-facets-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864"></p>
 </figure>
 </div>
 </div>
@@ -674,7 +707,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="vision-zero-implementation-timeline" class="level3">
 <h3 class="anchored" data-anchor-id="vision-zero-implementation-timeline">Vision Zero Implementation Timeline</h3>
-<p>The Vision Zero program was rolled out in a staggered fashion, with different intersections receiving treatments in different years. The chart below illustrates the number of intersections in our sample that received their first major VZ intervention in each year of the study period (2015-2021). This excludes the citywide speed limit reduction, which was applied to nearly all intersections in 2014.</p>
+<p>The Vision Zero program was rolled out in a staggered fashion, with different intersections receiving treatments in different years. Our study design leverages this staggered implementation to better isolate the causal impact of each intervention.</p>
+<div class="grid">
+<div class="g-col-12 g-col-md-6">
+<ul>
+<li><p><strong>Nearly 25% of intersections in our data received their first Vision Zero intervention in 2016,</strong> with 2,237 intersections treated during that year.</p></li>
+<li><p><strong>No intersection in our data received its first Vision Zero treatment in 2021</strong>, suggesting that the program’s implementation to <em>new</em> intersections might have been limited in the aftermath of the COVID-19 pandemic.</p></li>
+</ul>
+</div>
+<div class="g-col-12 g-col-md-6">
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -684,15 +725,19 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</div>
+</div>
 </section>
 <section id="intervention-specific-rollout" class="level3">
 <h3 class="anchored" data-anchor-id="intervention-specific-rollout">Intervention-Specific Rollout</h3>
-<p>To see how each specific safety measure was rolled out over time, the charts below break down the implementation timeline for each of the nine interventions studied. Each chart shows the number of intersections that received that particular treatment for the first time in a given year. Notice how some interventions, like Signal Retiming, were implemented heavily in certain years, while others, like Enhanced Crossings, were deployed more sparingly.</p>
-<div class="cell">
+<p>To see how each specific safety measure was rolled out over time, the charts below break down the implementation timeline for each of the nine interventions studied. Each chart shows the number of intersections that received that particular treatment for the first time in a given year. Notice how some interventions, like <strong>Neighborhood Slow Zones</strong>, were implemented heavily towards the beginning of the program’s roll-out, while others, like <strong>Street Improvement Corridors</strong>, were deployed throughout the observation period.</p>
+<p>While the program’s expansion to new intersections paused in 2021, the work itself did not. The charts below reveal a strategic shift: instead of expanding the program’s footprint, the city began <strong>deepening the investment</strong> by layering additional safety measures onto intersections that were already part of the program.</p>
+<p>For instance, a significant number of intersections received new <strong>Turn Traffic Calming</strong> or <strong>Speed Humps</strong> for the first time in 2021, even though those locations had already received a different type of treatment in a prior year.</p>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/plot-intervention-facets-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="index_files/figure-html/plot-intervention-facets-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="864"></p>
 </figure>
 </div>
 </div>
@@ -700,26 +745,27 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="impact-of-vz-interventions-on-pedestrian-safety" class="level3">
 <h3 class="anchored" data-anchor-id="impact-of-vz-interventions-on-pedestrian-safety">Impact of VZ Interventions on Pedestrian Safety</h3>
-<p>We used a negative binomial regression model to estimate the effect of each intervention on the annual count of pedestrian casualties. The table below summarizes these findings. Rows are colored based on the result: <strong>green</strong> for a statistically significant reduction in casualties, <strong>red</strong> for a significant increase, and <strong>grey</strong> for a non-significant result.</p>
+<p>We used a negative binomial regression model to estimate the effect of each intervention on the annual count of pedestrian casualties. The results are presented as an <strong>Incidence Rate Ratio (IRR)</strong>. An IRR <strong>below 1.0</strong> suggests the intervention <em>reduced</em> casualties, while an IRR <strong>above 1.0</strong> suggests it <em>increased</em> them.</p>
+<p>The table below summarizes these findings. Rows are colored based on the result: <strong>green</strong> for a statistically significant reduction, <strong>red</strong> for a significant increase, and <strong>grey</strong> for no significant effect.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="wcphtfrwzy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wcphtfrwzy table {
+<div id="uvxgvsiykt" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#uvxgvsiykt table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#wcphtfrwzy thead, #wcphtfrwzy tbody, #wcphtfrwzy tfoot, #wcphtfrwzy tr, #wcphtfrwzy td, #wcphtfrwzy th {
+#uvxgvsiykt thead, #uvxgvsiykt tbody, #uvxgvsiykt tfoot, #uvxgvsiykt tr, #uvxgvsiykt td, #uvxgvsiykt th {
   border-style: none;
 }
 
-#wcphtfrwzy p {
+#uvxgvsiykt p {
   margin: 0;
   padding: 0;
 }
 
-#wcphtfrwzy .gt_table {
+#uvxgvsiykt .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -745,12 +791,12 @@ ul.task-list li input[type="checkbox"] {
   border-left-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_caption {
+#uvxgvsiykt .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#wcphtfrwzy .gt_title {
+#uvxgvsiykt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -762,7 +808,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-width: 0;
 }
 
-#wcphtfrwzy .gt_subtitle {
+#uvxgvsiykt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -774,7 +820,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-width: 0;
 }
 
-#wcphtfrwzy .gt_heading {
+#uvxgvsiykt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -786,13 +832,13 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_bottom_border {
+#uvxgvsiykt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_col_headings {
+#uvxgvsiykt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -807,7 +853,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_col_heading {
+#uvxgvsiykt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -827,7 +873,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#wcphtfrwzy .gt_column_spanner_outer {
+#uvxgvsiykt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -839,15 +885,15 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 4px;
 }
 
-#wcphtfrwzy .gt_column_spanner_outer:first-child {
+#uvxgvsiykt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wcphtfrwzy .gt_column_spanner_outer:last-child {
+#uvxgvsiykt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wcphtfrwzy .gt_column_spanner {
+#uvxgvsiykt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -859,11 +905,11 @@ ul.task-list li input[type="checkbox"] {
   width: 100%;
 }
 
-#wcphtfrwzy .gt_spanner_row {
+#uvxgvsiykt .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#wcphtfrwzy .gt_group_heading {
+#uvxgvsiykt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -889,7 +935,7 @@ ul.task-list li input[type="checkbox"] {
   text-align: left;
 }
 
-#wcphtfrwzy .gt_empty_group_heading {
+#uvxgvsiykt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -904,15 +950,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: middle;
 }
 
-#wcphtfrwzy .gt_from_md > :first-child {
+#uvxgvsiykt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wcphtfrwzy .gt_from_md > :last-child {
+#uvxgvsiykt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wcphtfrwzy .gt_row {
+#uvxgvsiykt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -931,7 +977,7 @@ ul.task-list li input[type="checkbox"] {
   overflow-x: hidden;
 }
 
-#wcphtfrwzy .gt_stub {
+#uvxgvsiykt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -944,7 +990,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#wcphtfrwzy .gt_stub_row_group {
+#uvxgvsiykt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -958,15 +1004,15 @@ ul.task-list li input[type="checkbox"] {
   vertical-align: top;
 }
 
-#wcphtfrwzy .gt_row_group_first td {
+#uvxgvsiykt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wcphtfrwzy .gt_row_group_first th {
+#uvxgvsiykt .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#wcphtfrwzy .gt_summary_row {
+#uvxgvsiykt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -976,16 +1022,16 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#wcphtfrwzy .gt_first_summary_row {
+#uvxgvsiykt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_first_summary_row.thick {
+#uvxgvsiykt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wcphtfrwzy .gt_last_summary_row {
+#uvxgvsiykt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -995,7 +1041,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_grand_summary_row {
+#uvxgvsiykt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1005,7 +1051,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#wcphtfrwzy .gt_first_grand_summary_row {
+#uvxgvsiykt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1015,7 +1061,7 @@ ul.task-list li input[type="checkbox"] {
   border-top-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_last_grand_summary_row_top {
+#uvxgvsiykt .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1025,11 +1071,11 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_striped {
+#uvxgvsiykt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wcphtfrwzy .gt_table_body {
+#uvxgvsiykt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1038,7 +1084,7 @@ ul.task-list li input[type="checkbox"] {
   border-bottom-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_footnotes {
+#uvxgvsiykt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1052,7 +1098,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_footnote {
+#uvxgvsiykt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1061,7 +1107,7 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#wcphtfrwzy .gt_sourcenotes {
+#uvxgvsiykt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1075,7 +1121,7 @@ ul.task-list li input[type="checkbox"] {
   border-right-color: #D3D3D3;
 }
 
-#wcphtfrwzy .gt_sourcenote {
+#uvxgvsiykt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1083,72 +1129,72 @@ ul.task-list li input[type="checkbox"] {
   padding-right: 5px;
 }
 
-#wcphtfrwzy .gt_left {
+#uvxgvsiykt .gt_left {
   text-align: left;
 }
 
-#wcphtfrwzy .gt_center {
+#uvxgvsiykt .gt_center {
   text-align: center;
 }
 
-#wcphtfrwzy .gt_right {
+#uvxgvsiykt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wcphtfrwzy .gt_font_normal {
+#uvxgvsiykt .gt_font_normal {
   font-weight: normal;
 }
 
-#wcphtfrwzy .gt_font_bold {
+#uvxgvsiykt .gt_font_bold {
   font-weight: bold;
 }
 
-#wcphtfrwzy .gt_font_italic {
+#uvxgvsiykt .gt_font_italic {
   font-style: italic;
 }
 
-#wcphtfrwzy .gt_super {
+#uvxgvsiykt .gt_super {
   font-size: 65%;
 }
 
-#wcphtfrwzy .gt_footnote_marks {
+#uvxgvsiykt .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#wcphtfrwzy .gt_asterisk {
+#uvxgvsiykt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wcphtfrwzy .gt_indent_1 {
+#uvxgvsiykt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wcphtfrwzy .gt_indent_2 {
+#uvxgvsiykt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wcphtfrwzy .gt_indent_3 {
+#uvxgvsiykt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wcphtfrwzy .gt_indent_4 {
+#uvxgvsiykt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wcphtfrwzy .gt_indent_5 {
+#uvxgvsiykt .gt_indent_5 {
   text-indent: 25px;
 }
 
-#wcphtfrwzy .katex-display {
+#uvxgvsiykt .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#wcphtfrwzy div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#uvxgvsiykt div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1249,27 +1295,46 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="ranking-intervention-effectiveness" class="level3">
 <h3 class="anchored" data-anchor-id="ranking-intervention-effectiveness">Ranking Intervention Effectiveness</h3>
-<p>The bar chart below visualizes the estimated percent change in pedestrian casualties from the table above, ranking the interventions from most protective to most adverse. This provides an at-a-glance summary of which strategies were most effective. The color coding is the same: <strong>green</strong> indicates a significant reduction in casualties, <strong>red</strong> a significant increase, and <strong>grey</strong> no significant effect.</p>
+<div class="grid">
+<div class="g-col-12 g-col-md-5">
+<p>The bar chart visualizes the estimated percent change in pedestrian casualties for each intervention, providing an at-a-glance summary of which strategies were most effective.</p>
+<ul>
+<li><p><strong>What Works Best?</strong> The most successful interventions manage vehicle speed through physical design or regulation.</p>
+<ul>
+<li><p>Neighborhood Slow Zones <strong>(-18.4%)</strong></p></li>
+<li><p>Turn Traffic Calming <strong>(-14.4%)</strong></p></li>
+<li><p>Speed Humps <strong>(-11.5%)</strong></p></li>
+</ul></li>
+<li><p><strong>What Doesn’t Work (or Makes Things Worse)?</strong></p>
+<ul>
+<li><p>25 MPH Signal Retiming <strong>(+7.1%)</strong> was the only intervention associated with a harmful effect.</p></li>
+<li><p>Leading Pedestrian Intervals, Enhanced Crossings, and SIP Intersections had no statistically significant effect.</p></li>
+</ul></li>
+</ul>
+</div>
+<div class="g-col-12 g-col-md-7">
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/plot-effects-1.png" class="img-fluid figure-img" width="864"></p>
+<p><img src="index_files/figure-html/plot-effects-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
+</div>
+</div>
 </div>
 </div>
 </div>
 <hr>
 </section>
-<section id="conclusion" class="level3">
-<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
-<p>Our analysis indicates that not all Vision Zero interventions are equally effective. The key takeaways are:</p>
+<section id="conclusion-policy-implications" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion-policy-implications">Conclusion &amp; Policy Implications</h3>
+<p>Our analysis confirms that Vision Zero has had a tangible, positive impact on pedestrian safety, but not all interventions contribute equally. The findings provide a clear mandate for future transportation policy:</p>
 <ul>
-<li><p><strong>Controlling Vehicle Speed is Paramount:</strong> Interventions designed to physically or legally force drivers to slow down are the most successful at reducing pedestrian casualties. <strong>Neighborhood Slow Zones</strong>, <strong>Turn Traffic Calming</strong>, and <strong>Speed Humps</strong> showed the largest protective effects. Effective speed management is the cornerstone of pedestrian safety.</p></li>
-<li><p><strong>Some Interventions May Have Unintended Consequences:</strong> Retiming traffic signals to create a “green wave” for vehicles traveling 25 MPH was associated with a statistically significant <strong>increase</strong> in pedestrian casualties. This suggests that changes aimed at improving vehicle flow must be carefully evaluated to ensure they do not compromise the safety of other road users.</p></li>
-<li><p><strong>Systemic Changes Outperform Spot Treatments:</strong> Redesigning an entire street segment (<strong>SIP Corridors</strong>) was found to be effective, while implementing similar projects at a single, isolated <strong>intersection</strong> had no significant impact. This suggests that broader, more comprehensive changes to the streetscape are more impactful.</p></li>
+<li><p><strong>Prioritize Speed Management:</strong> The most effective way to protect pedestrians is to control vehicle speed. Future investments should be heavily focused on expanding infrastructure like <strong>Neighborhood Slow Zones</strong>, <strong>Turn Traffic Calming</strong>, and <strong>Speed Humps</strong>.</p></li>
+<li><p><strong>Re-evaluate Signal Retiming:</strong> The finding that signal retiming to favor vehicle flow is associated with an <em>increase</em> in pedestrian casualties is alarming. Transportation agencies must carefully review this practice and consider pairing it with other proven safety measures.</p></li>
+<li><p><strong>Focus on Systemic, Not Spot, Treatments:</strong> Redesigning an entire street segment (<strong>SIP Corridors</strong>) was effective, while implementing similar projects at a single <strong>intersection</strong> was not. This suggests that creating a consistently safe environment along an entire corridor is more impactful than isolated, spot-based fixes.</p></li>
 </ul>
-<p>Ultimately, this research demonstrates that creating a safe transportation system is not at odds with creating an efficient one. Investments that calm traffic are a core component of an efficient network, creating a more predictable and resilient environment for all road users while reducing the profound human and economic costs of traffic collisions.</p>
+<p>Ultimately, this research shows that building a safe transportation system and an efficient one are not conflicting goals. Investments in traffic calming are a core component of an efficient network that is safer and more predictable for all. ```</p>
 
 
 </section>

@@ -1,36 +1,37 @@
 project:
   type: website
-  output-dir: docs 
+  output-dir: docs
 
 website:
-  title: "NYC Vision Zero Analysis" 
-  search: false 
+  search: false
+  title: "City Council" 
+  favicon: favicon_logo.png
   navbar:
-    title: "Evaluating NYC's Vision Zero" 
-    pinned: true 
-    background: light 
-    tools:
-      - icon: github
-        href: "https://github.com/NewYorkCityCouncil/vision-zero-web.git" 
-        aria-label: GitHub
+    pinned: true
+    background: light
+    logo: full-council-logo.png
+    title: false
     left:
-      - text: "Home"
-        href: index.qmd # Links to your main homepage
-        
+      - text: "Official VZ Page"
+        href: "https://www.nyc.gov/content/visionzero/pages/"
+      - text: "Data & Reports"
+        href: "https://www.nyc.gov/content/visionzero/pages/open-data"
+    tools:
+      - icon: twitter
+        href: https://x.com/NYCCouncilData
+      - icon: github
+        href: https://github.com/NewYorkCityCouncil/
 format:
   html:
-    theme: cosmo 
-    css: styles.css 
-    toc: true 
-    toc-depth: 3 
+    page-layout: full
     grid:
-      body-width: 1100px 
-      
+      body-width: 1000px
+      margin-width: 150px
+    theme: cosmo
+    css: styles.css
+    toc: false
+    include-in-header:
+      - text: |
+          <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
 editor: visual
-
-
-
-
-
-
-

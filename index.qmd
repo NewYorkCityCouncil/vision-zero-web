@@ -14,6 +14,8 @@ library(tidyverse)
 library(here)
 library(gt)
 library(scales)
+library(sf)
+library(leaflet)
 
 # 2. LOAD DATA
 vz_data <- read_csv(here::here("data", "input", "intersection_intervention_table_ever_treated_2015-2022.csv"))
@@ -173,7 +175,108 @@ intervention_descriptions %>%
   )
 ```
 
-------------------------------------------------------------------------
+### Map of All Vision Zero Intersections
+
+::::: grid
+::: {.g-col-12 .g-col-md-3}
+-   The interactive map on the right displays the polygon geometry for every intersection in NYC. Zoom-in and click on any intersection to see a list of the Vision Zero interventions it has received and the year each was first implemented.
+
+-   **Note**: This map displays ALL intersections in the city, including ones which were left out of our statistical modeling.
+:::
+
+::: {.g-col-12 .g-col-md-9}
+```{r intersection-map, echo=FALSE, warning=FALSE, message=FALSE, cache=TRUE}
+#| label: intersection-map
+#| echo: false
+#| warning: false
+#| message: false
+#| cache: true
+
+# --- Step 1 & 2: Load and Prepare Popup Data ---
+full_geo_data <- read_csv(here::here("data", "input", "intersection_intervention_table_final_w_geo.csv"))
+
+intervention_name_map <- c(
+  "leading_pedestrian_interval_post" = "Leading Pedestrian Interval",
+  "turn_traffic_calming_post" = "Turn Traffic Calming",
+  "enhanced_crossing_post" = "Enhanced Crossing",
+  "speed_humps_post" = "Speed Humps",
+  "street_improvement_project_post" = "SIP Intersection",
+  "street_improvement_corridors_post" = "SIP Corridor",
+  "signal_retiming_post" = "25 MPH Signal Retiming",
+  "slow_zones_post" = "Neighborhood Slow Zone",
+  "speed_limit_post" = "Citywide Speed Limit Reduction"
+)
+
+popup_summary <- full_geo_data %>%
+  select(intersection_id, year, ends_with("_post"), -covid_pre_post) %>%
+  pivot_longer(
+    cols = -c(intersection_id, year),
+    names_to = "intervention_type",
+    values_to = "is_active"
+  ) %>%
+  filter(is_active == 1) %>%
+  group_by(intersection_id, intervention_type) %>%
+  summarise(first_year = min(year), .groups = "drop") %>%
+  mutate(intervention_name = recode(intervention_type, !!!intervention_name_map)) %>%
+  mutate(popup_line = paste0("<b>", intervention_name, ":</b> ", first_year)) %>%
+  group_by(intersection_id) %>%
+  summarise(
+    popup_html = paste0(popup_line, collapse = "<br>")
+  ) %>% 
+  mutate(popup_html = if_else(is.na(popup_html), "No VZ interventions recorded.", popup_html))
+
+# --- Step 3: Create a unique spatial dataset with Polygons ---
+intersections_sf <- full_geo_data %>%
+  select(intersection_id, intersection_geom) %>%
+  tidyr::drop_na(intersection_geom) %>%
+  distinct(intersection_id, .keep_all = TRUE) %>%
+  st_as_sf(wkt = "intersection_geom", crs = 2263) %>%
+  st_transform(crs = 4326)
+
+# --- Step 4: Join popup data to the spatial data ---
+intersections_for_map <- intersections_sf %>%
+  left_join(popup_summary, by = "intersection_id")
+
+# --- Step 4.5: Create a separate dataset for the circle markers ---
+intersections_centroids <- intersections_for_map %>%
+  st_centroid()
+
+# --- Step 5: Build the Leaflet Map with Correct Data for Each Layer ---
+leaflet() %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Basemap") %>%
+  setView(lng = -74.00, lat = 40.71, zoom = 11) %>%
+  
+  # Circles Layer
+  addCircles(
+    data = intersections_centroids,
+    radius = 5, # Radius is now in METERS
+    stroke = FALSE,
+    fillColor = "#E37222", 
+    fillOpacity = 0.7,
+    popup = ~popup_html,
+    group = "Overview (Circles)"
+  ) %>%
+  
+  # Polygons layer 
+  addPolygons(
+    data = intersections_for_map,
+    fillColor = "#05014a", 
+    fillOpacity = 0.5,
+    stroke = TRUE,
+    color = "#FFFFFF",
+    weight = 0.5,
+    popup = ~popup_html,
+    group = "Detailed (Shapes)"
+  ) %>%
+  
+  # Layer Control 
+  addLayersControl(
+    baseGroups = c("Overview (Circles)", "Detailed (Shapes)"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+```
+:::
+:::::
 
 ### Citywide Pedestrian Casualty Trends
 
@@ -343,17 +446,12 @@ regression_results_detailed %>%
 The bar chart visualizes the estimated percent change in pedestrian casualties for each intervention, providing an at-a-glance summary of which strategies were most effective.
 
 -   **What Works Best?** The most successful interventions manage vehicle speed through physical design or regulation.
-
     -   Neighborhood Slow Zones **(-18.4%)**
-
     -   Turn Traffic Calming **(-14.4%)**
-
     -   Speed Humps **(-11.5%)**
 
 -   **What Doesn't Work (or Makes Things Worse)?**
-
     -   25 MPH Signal Retiming **(+7.1%)** was the only intervention associated with a harmful effect.
-
     -   Leading Pedestrian Intervals, Enhanced Crossings, and SIP Intersections had no statistically significant effect.
 :::
 

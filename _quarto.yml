@@ -14,8 +14,12 @@ website:
     left:
       - text: "Official VZ Page"
         href: "https://www.nyc.gov/content/visionzero/pages/"
-      - text: "Data & Reports"
+      - text: "VZ Data & Reports"
         href: "https://www.nyc.gov/content/visionzero/pages/open-data"
+      - text: "DOT VZ Page"
+        href: "https://www.nyc.gov/html/dot/html/motorist/vision-zero-safe-driving.shtml"
+      - text: "VZ Map"
+        href: "https://vzv.nyc/"
     tools:
       - icon: twitter
         href: https://x.com/NYCCouncilData

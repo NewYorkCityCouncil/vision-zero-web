@@ -1,6 +1,6 @@
 ---
 format: html
-title: "An Analysis of NYC's Vision Zero Program"
+title: "Vision Zero in NYC"
 subtitle: "Rachel Avram, Danylo Orlov, Melissa Nuñez, Alaa Moussawi, NYCC Data Team"
 title-block-banner: "images/nyc-banner.jpg"
 ---
@@ -125,9 +125,9 @@ results_with_color <- regression_results_detailed %>%
 
 ::::::::: grid
 ::: {.g-col-12 .g-col-md-8}
-# Evaluating the Impact of Traffic Safety Interventions on Pedestrian Casualties (2013-2023)
+# Evaluating the Impact of Vision Zero Interventions on Pedestrian Casualties in NYC (2013-2023)
 
-Vision Zero in New York City Motor vehicle crashes are a leading cause of death and injury in New York City (NYC). In 2014, the city adopted the Vision Zero (VZ) framework, a comprehensive strategy to eliminate all traffic-related fatalities. The program uses a multi-faceted approach, including infrastructure redesign, lower speed limits, and public awareness campaigns. This analysis evaluates the impact of nine distinct street-level interventions on pedestrian casualties (deaths and injuries combined). The study uses a robust statistical model to analyze data from 9,562 intersections between 2013 and 2023, isolating the effect of each intervention while controlling for other factors like traffic volume and population density.
+Motor vehicle crashes are a leading cause of death and injury in New York City (NYC). In 2014, the city adopted the **Vision Zero (VZ)** framework, a comprehensive strategy to eliminate all traffic-related fatalities. The program uses a multi-faceted approach, including infrastructure redesign, lower speed limits, and public awareness campaigns. This analysis evaluates the impact of nine distinct street-level interventions on pedestrian casualties. The study examines data from 2013 to 2023, focusing specifically on intersections that received treatments between 2015 and 2021. This approach ensures that every intervention can be evaluated with at least two years of 'before' data and two years of 'after' data, allowing for a robust comparison.
 :::
 
 ::::::: {.g-col-12 .g-col-md-4}
@@ -405,4 +405,4 @@ Our analysis confirms that Vision Zero has had a tangible, positive impact on pe
 
 -   **Focus on Systemic, Not Spot, Treatments:** Redesigning an entire street segment (**SIP Corridors**) was effective, while implementing similar projects at a single **intersection** was not. This suggests that creating a consistently safe environment along an entire corridor is more impactful than isolated, spot-based fixes.
 
-Ultimately, this research shows that building a safe transportation system and an efficient one are not conflicting goals. Investments in traffic calming are a core component of an efficient network that is safer and more predictable for all. \`\`\`
+Ultimately, this research shows that building a safe transportation system and an efficient one are not conflicting goals. Investments in traffic calming are a core component of an efficient network that is safer and more predictable for all.

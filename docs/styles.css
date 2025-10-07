@@ -3,7 +3,7 @@
 /* =================================================== */
 
 :root {
-  --accent-color: #05014a; /* Your professional navy blue */
+  --accent-color: #05014a; 
   --positive-color: #e6f5e6;
   --negative-color: #fee0e2;
 }
@@ -77,7 +77,7 @@ hr {
 /* Key Findings Callout Box                          */
 /* =================================================== */
 
-/* NEW: Style the callout box to look better as a sidebar */
+/* Style the callout box to look better as a sidebar */
 .callout-note {
   background-color: #f8f9fa; /* Light grey background */
   border-left: 5px solid var(--accent-color);
@@ -112,16 +112,6 @@ hr {
 /* =================================================== */
 /* Content: Tables, Plots & Layouts                  */
 /* =================================================== */
-
-/* 
-   THIS BLOCK WAS THE PROBLEM AND HAS BEEN REMOVED.
-   The flex properties were overriding default text alignment within columns.
-.quarto-layout-panel > .quarto-layout-row > .quarto-layout-cell {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-*/
 
 div.gt_container {
     margin-left: auto;

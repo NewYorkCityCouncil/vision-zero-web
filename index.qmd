@@ -16,6 +16,7 @@ library(gt)
 library(scales)
 library(sf)
 library(leaflet)
+library(plotly)
 
 # 2. LOAD DATA
 vz_data <- read_csv(here::here("data", "input", "intersection_intervention_table_ever_treated_2015-2022.csv"))
@@ -388,6 +389,8 @@ ggplot(first_year_by_intervention, aes(x = first_year, y = num_intersections)) +
 
 ### Impact of VZ Interventions on Pedestrian Safety
 
+Instead of just looking at intersections before and after a treatment, our staggered difference-in-difference design does something smarter: it compares the **change in casualties at a treated intersection** to the **change in casualties at similar intersections that *hadn't received that treatment yet***.
+
 We used a negative binomial regression model to estimate the effect of each intervention on the annual count of pedestrian casualties. The results are presented as an **Incidence Rate Ratio (IRR)**. An IRR **below 1.0** suggests the intervention *reduced* casualties, while an IRR **above 1.0** suggests it *increased* them.
 
 The table below summarizes these findings. Rows are colored based on the result: **green** for a statistically significant reduction, **red** for a significant increase, and **grey** for no significant effect.
@@ -502,3 +505,9 @@ Our analysis confirms that Vision Zero has had a tangible, positive impact on pe
 -   **Focus on Systemic, Not Spot, Treatments:** Redesigning an entire street segment (**SIP Corridors**) was effective, while implementing similar projects at a single **intersection** was not. This suggests that creating a consistently safe environment along an entire corridor is more impactful than isolated, spot-based fixes.
 
 Ultimately, this research shows that building a safe transportation system and an efficient one are not conflicting goals. Investments in traffic calming are a core component of an efficient network that is safer and more predictable for all.
+
+### About the Data & Analysis
+
+This analysis was conducted by the NYC Council Data Team using publicly available data from [NYC Open Data](https://opendata.cityofnewyork.us/), including datasets from the NYPD and the Department of Transportation. The full methodology is detailed in our to-be-published manuscript.
+
+While our statistical model controls for many factors, traffic safety is incredibly complex. The findings represent our best estimate of the impact of these specific interventions, but other unmeasured factors could also play a role.

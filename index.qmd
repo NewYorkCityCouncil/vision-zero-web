@@ -233,7 +233,7 @@ The Vision Zero program was rolled out in a staggered fashion, with different in
 
 ::::: grid
 ::: {.g-col-12 .g-col-md-6}
--   **Nearly 25% of intersections in our data received their first Vision Zero intervention in 2016,** with 2,237 intersections treated during that year.
+-   **Nearly 25% of intersections in our data received their first Vision Zero intervention in 2016,** with 2,247 intersections treated during that year.
 
 -   **No intersection in our data received its first Vision Zero treatment in 2021**, suggesting that the program's implementation to *new* intersections might have been limited in the aftermath of the COVID-19 pandemic.
 :::
@@ -263,8 +263,6 @@ ggplot(interventions_by_year, aes(x = first_year, y = num_intersections)) +
 To see how each specific safety measure was rolled out over time, the charts below break down the implementation timeline for each of the nine interventions studied. Each chart shows the number of intersections that received that particular treatment for the first time in a given year. Notice how some interventions, like **Neighborhood Slow Zones**, were implemented heavily towards the beginning of the program's roll-out, while others, like **Street Improvement Corridors**, were deployed throughout the observation period.
 
 While the program's expansion to new intersections paused in 2021, the work itself did not. The charts below reveal a strategic shift: instead of expanding the program's footprint, the city began **deepening the investment** by layering additional safety measures onto intersections that were already part of the program.
-
-For instance, a significant number of intersections received new **Turn Traffic Calming** or **Speed Humps** for the first time in 2021, even though those locations had already received a different type of treatment in a prior year.
 
 ```{r plot-intervention-facets, echo=FALSE, warning=FALSE, message=FALSE, fig.height=10, fig.width=9}
 #| fig-align: center

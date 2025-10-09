@@ -16,7 +16,8 @@ library(gt)
 library(scales)
 library(sf)
 library(leaflet)
-library(ggiraph) 
+library(ggiraph)
+library(gtExtras)
 
 # 2. LOAD DATA
 vz_data <- read_csv(here::here("data", "input", "intersection_intervention_table_ever_treated_2015-2022.csv"))
@@ -157,22 +158,37 @@ Key Findings
 The analysis focuses on nine key physical and regulatory changes made to NYC streets. The table below provides a brief description of each intervention.
 
 ```{r table-descriptions, echo=FALSE, warning=FALSE, message=FALSE}
+#| code-fold: true
 intervention_descriptions %>%
   gt() %>%
+  fmt_missing(
+    columns = everything(),
+    missing_text = "—"
+  ) %>%
+  # Apply markdown formatting to all columns (keeps links/bolding if you add them)
   fmt_markdown(columns = everything()) %>%
+  # Adjust column widths for optimal layout
   cols_width(
-    Intervention ~ px(180),
+    Intervention ~ px(200),
     Description ~ px(350),
-    everything() ~ px(300)
+    everything() ~ px(280)
   ) %>%
-  cols_label(
-    `Components/ Examples` = "Components / Examples"
+  # Left-align the text columns for readability
+  cols_align(
+    align = "left",
+    columns = c(Intervention, Description, `Components/ Examples`)
   ) %>%
+  # Add a main title to the table
   tab_header(
     title = "Descriptions of Assessed Vision Zero Interventions"
   ) %>%
+  # Customize table-wide options for a modern feel
   tab_options(
-    column_labels.font.weight = "bold"
+    heading.title.font.size = px(20),
+    column_labels.font.weight = "bold",
+    table.border.top.style = "hidden",
+    table.border.bottom.style = "hidden",
+    source_notes.font.size = px(12)
   )
 ```
 
@@ -469,54 +485,101 @@ Instead of just looking at intersections before and after a treatment, our stagg
 
 We used a negative binomial regression model to estimate the effect of each intervention on the annual count of pedestrian casualties. The results are presented as an **Incidence Rate Ratio (IRR)**. An IRR **below 1.0** suggests the intervention *reduced* casualties, while an IRR **above 1.0** suggests it *increased* them.
 
-The table below summarizes these findings. Rows are colored based on the result: **green** for a statistically significant reduction, **red** for a significant increase, and **grey** for no significant effect.
+The table below summarizes these findings. Percent changes and IRRs are colored based on the result: **green** for a statistically significant reduction, **red** for a significant increase, and **grey** for no significant effect.
 
 ```{r table-results, echo=FALSE, warning=FALSE, message=FALSE}
-# Plot and display
-regression_results_detailed %>%
-  gt() %>%
-  tab_header(
-    title = "Impact of VZ Interventions on Pedestrian Casualties"
-  ) %>%
-  fmt_number(
-    columns = c(IRR, P_Value),
-    decimals = 3
-  ) %>%
-  fmt_percent(
-    columns = Percent_Change,
-    decimals = 2
-  ) %>%
-  cols_merge_range(
-    col_begin = CI_Lower,
-    col_end = CI_Upper,
-    sep = ", "
-  ) %>%
-  cols_label(
-    Intervention = "Intervention",
-    IRR = "IRR",
-    CI_Lower = "95% CI for IRR",
-    Percent_Change = "% Change",
-    CI_Percent_Formatted = "95% CI for % Change",
-    P_Value = "p-value"
-  ) %>%
-  tab_style(
-    style = list(cell_fill(color = "#e6f5e6"), cell_text(weight = "bold")),
-    locations = cells_body(rows = IRR < 1 & P_Value <= 0.05)
-  ) %>%
-  tab_style(
-    style = list(cell_fill(color = "#fee0e2"), cell_text(weight = "bold")),
-    locations = cells_body(rows = IRR > 1 & P_Value <= 0.05)
-  ) %>%
-  tab_style(
-    style = list(cell_fill(color = "#f7f7f7")),
-    locations = cells_body(rows = P_Value > 0.05)
-  ) %>%
-  cols_width(Intervention ~ px(300)) %>%
-  tab_options(
-    table.border.top.color = "white",
-    column_labels.border.bottom.color = "black",
-    column_labels.border.bottom.width = px(2)
+#| code-fold: true
+
+# Create data frame prepared for the gt table
+results_for_table <- regression_results_detailed %>%
+  mutate(
+    P_Value_Formatted = case_when(
+      P_Value < 0.001 ~ "<0.001",
+      TRUE ~ sprintf("%.3f", P_Value)
+    ),
+    CI_Formatted = paste0("[", 
+                          sprintf("%.3f", CI_Lower), ", ", 
+                          sprintf("%.3f", CI_Upper), "]")
   )
+
+# Define color domains for each column separately
+min_pct <- min(results_for_table$Percent_Change)
+max_pct <- max(results_for_table$Percent_Change)
+min_irr <- min(results_for_table$IRR)
+max_irr <- max(results_for_table$IRR)
+
+results_for_table %>%
+  select(
+    Intervention, Percent_Change, IRR, CI_Formatted, P_Value_Formatted, P_Value
+  ) %>%
+  gt() %>%
+  # Main Title
+  tab_header(
+    title = "Impact of VZ Interventions on Pedestrian Casualties",
+    subtitle = "Comparing interventions based on their estimated effect"
+  ) %>%
+
+  # Rule 1a: Apply GREEN gradient to '% Change' for significant reductions
+  data_color(
+    columns = Percent_Change,
+    rows = P_Value <= 0.05 & Percent_Change < 0,
+    colors = scales::col_numeric(
+      palette = c("#66C2A4", "#D9F0D3"), # Dark to light green
+      domain = c(min_pct, 0)
+    )
+  ) %>%
+  # Rule 1b: Apply RED gradient to '% Change' for significant increases
+  data_color(
+    columns = Percent_Change,
+    rows = P_Value <= 0.05 & Percent_Change > 0,
+    colors = scales::col_numeric(
+      palette = c("#FFD6D7", "#FF8488"), # Light to medium red
+      domain = c(0, max_pct)
+    )
+  ) %>%
+  # Rule 2a: Apply GREEN gradient to 'IRR' for significant reductions
+  data_color(
+    columns = IRR,
+    rows = P_Value <= 0.05 & IRR < 1,
+    colors = scales::col_numeric(
+      palette = c("#66C2A4", "#D9F0D3"), # Dark to light green
+      domain = c(min_irr, 1)
+    )
+  ) %>%
+  # Rule 2b: Apply RED gradient to 'IRR' for significant increases
+  data_color(
+    columns = IRR,
+    rows = P_Value <= 0.05 & IRR > 1,
+    colors = scales::col_numeric(
+      palette = c("#FFD6D7", "#FF8488"), # Light to medium red
+      domain = c(1, max_irr)
+    )
+  ) %>%
+  # Rule 3: Make all text in significant rows BOLD
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(
+      columns = everything(),
+      rows = P_Value <= 0.05
+    )
+  ) %>%
+
+  # Formatting and cleanup
+  fmt_number(columns = IRR, decimals = 3) %>%
+  fmt_percent(columns = Percent_Change, decimals = 1) %>%
+  cols_label(
+    Intervention = "VZ Intervention",
+    Percent_Change = "% Change",
+    IRR = "IRR",
+    CI_Formatted = "95% CI",
+    P_Value_Formatted = "P-Value"
+  ) %>%
+  cols_align(align = "center", columns = c(Percent_Change, IRR, CI_Formatted, P_Value_Formatted)) %>%
+  tab_options(
+    column_labels.font.weight = "bold",
+    table.width = pct(100)
+  ) %>%
+  cols_hide(columns = P_Value)
 ```
 
 ### Ranking Intervention Effectiveness

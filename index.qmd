@@ -246,8 +246,9 @@ intersections_sf <- full_geo_data %>%
   select(intersection_id, intersection_geom) %>%
   tidyr::drop_na(intersection_geom) %>%
   distinct(intersection_id, .keep_all = TRUE) %>%
-  st_as_sf(wkt = "intersection_geom", crs = 2263) %>%
-  st_transform(crs = 4326)
+  st_as_sf(wkt = "intersection_geom", crs = 2263) 
+intersections_sf <- st_simplify(intersections_sf, dTolerance = 1)
+intersections_sf <- st_transform(intersections_sf, crs = 4326)
 
 # --- Step 4: Join popup data to the spatial data ---
 intersections_for_map <- intersections_sf %>%

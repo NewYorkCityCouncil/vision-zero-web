@@ -162,5 +162,31 @@ div.gt_container {
     text-align: center;
 }
 
+/* =================================================== */
+/* Custom Image Panel Styling                        */
+/* =================================================== */
 
+.image-panel {
+  background-color: #ffffff;
+  border-radius: 8px; 
+  padding: 1.5rem; 
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); 
+  border: 1px solid #d1e3e3; 
+}
+
+/* Ensure images inside the panel don't overflow the rounded corners */
+.image-panel img {
+  border-radius: 4px; 
+}
+
+/* Style the captions within the panel for better readability */
+.image-panel figcaption {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+  font-style: italic;
+  text-align: center;
+}
 

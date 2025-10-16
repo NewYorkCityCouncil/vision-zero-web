@@ -153,7 +153,9 @@ Key Findings
 :::::::
 :::::::::
 
+::: {.image-panel}
 ![The Vision Zero Safe System Approach philosophy.](images/safe-system.png){fig-align="center"}
+:::
 
 ### What Are the Vision Zero Interventions?
 
@@ -195,11 +197,10 @@ intervention_descriptions %>%
 ```
 
 ::::: grid
-::: {.g-col-6 .align-self-center}
+::: {.g-col-6 .align-self-center .image-panel}
 ![Left turn traffic calming, designed to reduce left turn speeds and enforce safe turning behavior.](images/ttc.jpg){fig-align="center"}
 :::
-
-::: g-col-6
+::: {.g-col-6 .image-panel}
 ![Pedestrian warning signage, a major component of enhanced crossings.](images/enhanced-crossings.jpg){fig-align="center"}
 :::
 :::::
@@ -275,7 +276,7 @@ leaflet() %>%
   addProviderTiles(providers$CartoDB.Positron, group = "Basemap") %>%
   setView(lng = -74.00, lat = 40.71, zoom = 11) %>%
   
-  # Circles Layer 
+  # Circles Layer - CHANGED TO addCircleMarkers for consistent pixel size
   addCircleMarkers(
     data = intersections_centroids,
     radius = 5, # Radius is now in PIXELS
@@ -447,7 +448,9 @@ g
 :::
 :::::
 
+::: {.image-panel}
 ![The Vision Zero task force includes experts from across government agencies who meet on a biweekly basis to discuss upcoming and ongoing interventions.](images/task-force.jpg){fig-align="center" width="50%"}
+:::
 
 ### Intervention-Specific Rollout
 
@@ -607,6 +610,7 @@ The bar chart visualizes the estimated percent change in pedestrian casualties f
     -   Neighborhood Slow Zones **(-18.4%)**
     -   Turn Traffic Calming **(-14.4%)**
     -   Speed Humps **(-11.5%)**
+
 -   **What Doesn't Work (or Makes Things Worse)?**
     -   25 MPH Signal Retiming **(+7.1%)** was the only intervention associated with a harmful effect.
     -   Leading Pedestrian Intervals, Enhanced Crossings, and SIP Intersections had no statistically significant effect.
@@ -669,7 +673,9 @@ g
 :::
 :::::
 
+::: {.image-panel}
 ![Sheepshead Bay Road in Brooklyn: an example of a complex intersection with multiple Vision Zero interventions applied. Since these improvements, the Department of Transportation reports that total injuries decreased by 18% and crashes with injuries decreased by 24% at this intersection.](images/treatments.png){fig-align="center"}
+:::
 
 ------------------------------------------------------------------------
 
@@ -689,4 +695,5 @@ Ultimately, this research shows that building a safe transportation system and a
 
 This analysis was conducted by the NYC Council Data Team using publicly available data from [NYC Open Data](https://opendata.cityofnewyork.us/), including datasets from the NYPD and the Department of Transportation. The full methodology is detailed in our to-be-published manuscript.
 
-While our statistical model controls for many factors, traffic safety is incredibly complex. The findings represent our best estimate of the impact of these specific interventions, but other unmeasured factors could also play a role. \`\`\`
+While our statistical model controls for many factors, traffic safety is incredibly complex. The findings represent our best estimate of the impact of these specific interventions, but other unmeasured factors could also play a role.
+```

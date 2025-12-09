@@ -81,15 +81,15 @@ first_year_by_intervention <- vz_data %>%
 # 7. PREPARE DATA FOR THE RESULTS TABLE
 regression_results_detailed <- tibble::tribble(
   ~Intervention, ~IRR, ~CI_Lower, ~CI_Upper, ~P_Value,
-  "Street Improvement Project Intersection", 1.118, 0.958, 1.305, 0.156,
-  "25 MPH Signal Retiming", 1.071, 1.026, 1.118, 0.002,
-  "Leading Pedestrian Interval Signal", 1.042, 0.992, 1.095, 0.102,
-  "Enhanced Crossing", 1.000, 0.765, 1.308, 0.999,
-  "Street Improvement Project Corridor", 0.951, 0.909, 0.995, 0.029,
-  "Citywide Speed Limit Reduction", 0.945, 0.900, 0.992, 0.021,
-  "Speed Hump", 0.885, 0.815, 0.962, 0.004,
-  "Turn Traffic Calming", 0.856, 0.779, 0.941, 0.001,
-  "Neighborhood Slow Zone", 0.816, 0.691, 0.964, 0.017
+  "Street Improvement Project Intersection", 1.039, 0.820, 1.318, 0.7503,
+  "25 MPH Signal Retiming", 0.979, 0.924, 1.037, 0.4718,
+  "Leading Pedestrian Interval Signal", 0.873, 0.818, 0.932, 0.0000,
+  "Enhanced Crossing", 1.196, 0.883, 1.619, 0.2479,
+  "Street Improvement Project Corridor", 0.961, 0.906, 1.019, 0.1860,
+  "Citywide Speed Limit Reduction", 0.898, 0.847, 0.952, 0.0003,
+  "Speed Hump", 0.926, 0.847, 1.014, 0.0966,
+  "Turn Traffic Calming", 0.733, 0.636, 0.846, 0.0000,
+  "Neighborhood Slow Zone", 0.788, 0.660, 0.940, 0.0083
 ) %>%
   mutate(
     Percent_Change = (IRR - 1),
@@ -131,7 +131,7 @@ results_with_color <- regression_results_detailed %>%
 ::: {.g-col-12 .g-col-md-8}
 # Evaluating the Impact of Vision Zero Interventions on Pedestrian Casualties in NYC (2013-2023)
 
-Motor vehicle crashes are a leading cause of death and injury in New York City (NYC). In 2014, the city adopted the **Vision Zero (VZ)** framework, a comprehensive strategy to eliminate all traffic-related fatalities. The program uses a multi-faceted approach, including infrastructure redesign, lower speed limits, and public awareness campaigns. This analysis evaluates the impact of nine distinct street-level interventions on pedestrian casualties. The study examines data from 2013 to 2023, focusing specifically on intersections that received treatments between 2015 and 2021. This approach ensures that every intervention can be evaluated with at least two years of 'before' data and two years of 'after' data, allowing for a robust comparison.
+Motor vehicle crashes are a leading cause of death and injury in New York City (NYC). In 2014, the city adopted the **Vision Zero (VZ)** framework, a comprehensive strategy to eliminate all traffic-related fatalities. The program uses a multi-faceted approach, including infrastructure redesign, lower speed limits, and public awareness campaigns. This analysis evaluates the impact of nine distinct street-level interventions on pedestrian casualties, examining data from 2013 to 2023 and focusing specifically on intersections that received treatments between 2015 and 2021. This approach ensures that every intervention can be evaluated with at least two years of 'before' data and two years of 'after' data, allowing for a robust comparison.
 :::
 
 ::::::: {.g-col-12 .g-col-md-4}
@@ -139,21 +139,21 @@ Motor vehicle crashes are a leading cause of death and injury in New York City (
 Key Findings
 
 ::: key-finding
-<i class="fas fa-check-circle"></i> **Speed is Key** <br> Interventions that physically slow traffic, like **Neighborhood Slow Zones (-18%)**, were most effective.
+<i class="fas fa-car-side" style="color: #2E86C1;"></i> **Speed is Key:** <br> Interventions that physically slow traffic, like **Turn Traffic Calming (-27%)** and **Neighborhood Slow Zones (-21%)**, were most effective.
 :::
 
 ::: key-finding
-<i class="fas fa-times-circle"></i> **Unintended Harm** <br> **Signal Retiming** to improve vehicle flow was linked to a **7% increase** in casualties.
+<i class="fas fa-walking" style="color: #27AE60;"></i> **Give Pedestrians a Head Start:** <br> **Leading Pedestrian Interval Signals** were associated with a **13% decrease** in casualties.
 :::
 
 ::: key-finding
-<i class="fas fa-minus-circle"></i> **Mixed Results** <br> Other common treatments showed no significant citywide impact on pedestrian safety.
+<i class="fas fa-clipboard-list" style="color: #7F8C8D;"></i> **Mixed Results:** <br> Other common treatments showed no significant citywide impact on pedestrian safety.
 :::
 ::::::
 :::::::
 :::::::::
 
-::: {.image-panel}
+::: image-panel
 ![The Vision Zero Safe System Approach philosophy.](images/safe-system.png){fig-align="center"}
 :::
 
@@ -200,6 +200,7 @@ intervention_descriptions %>%
 ::: {.g-col-6 .align-self-center .image-panel}
 ![Left turn traffic calming, designed to reduce left turn speeds and enforce safe turning behavior.](images/ttc.jpg){fig-align="center"}
 :::
+
 ::: {.g-col-6 .image-panel}
 ![Pedestrian warning signage, a major component of enhanced crossings.](images/enhanced-crossings.jpg){fig-align="center"}
 :::
@@ -448,7 +449,7 @@ g
 :::
 :::::
 
-::: {.image-panel}
+::: image-panel
 ![The Vision Zero task force includes experts from across government agencies who meet on a biweekly basis to discuss upcoming and ongoing interventions.](images/task-force.jpg){fig-align="center" width="50%"}
 :::
 
@@ -503,7 +504,7 @@ Instead of just looking at intersections before and after a treatment, our stagg
 
 We used a negative binomial regression model to estimate the effect of each intervention on the annual count of pedestrian casualties. The results are presented as an **Incidence Rate Ratio (IRR)**. An IRR **below 1.0** suggests the intervention *reduced* casualties, while an IRR **above 1.0** suggests it *increased* them.
 
-The table below summarizes these findings. Percent changes and IRRs are colored based on the result: **green** for a statistically significant reduction, **red** for a significant increase, and **grey** for no significant effect.
+The table below summarizes these findings. Percent changes and IRRs are colored based on the result: **green** for a statistically significant reduction, **red** for a significant increase (none in this study), and **grey** for no significant effect.
 
 ```{r table-results, echo=FALSE, warning=FALSE, message=FALSE}
 #| code-fold: true
@@ -606,14 +607,13 @@ results_for_table %>%
 ::: {.g-col-12 .g-col-md-5}
 The bar chart visualizes the estimated percent change in pedestrian casualties for each intervention, providing an at-a-glance summary of which strategies were most effective.
 
--   **What Works Best?** The most successful interventions manage vehicle speed through physical design or regulation.
-    -   Neighborhood Slow Zones **(-18.4%)**
-    -   Turn Traffic Calming **(-14.4%)**
-    -   Speed Humps **(-11.5%)**
-
--   **What Doesn't Work (or Makes Things Worse)?**
-    -   25 MPH Signal Retiming **(+7.1%)** was the only intervention associated with a harmful effect.
-    -   Leading Pedestrian Intervals, Enhanced Crossings, and SIP Intersections had no statistically significant effect.
+-   **What Works Best?** The most successful interventions manage vehicle speed through physical design/regulation, or enhance pedestrian visibility through a temporal decoupling of vehicular and pedestrian movement.
+    -   Turn Traffic Calming **(-26.7%)**
+    -   Neighborhood Slow Zones **(-21.2%)**
+    -   Leading Pedestrian Intervals **(-12.7%)**
+    -   Citywide Speed Limit Reduction **(-10.3%)**
+-   **What Doesn't Work?**
+    -   25 MPH Signal Retiming, Enhanced Crossings, Speed Humps, and SIP Intersections/Corridors had no statistically significant effect.
 :::
 
 ::: {.g-col-12 .g-col-md-7}
@@ -673,7 +673,7 @@ g
 :::
 :::::
 
-::: {.image-panel}
+::: image-panel
 ![Sheepshead Bay Road in Brooklyn: an example of a complex intersection with multiple Vision Zero interventions applied. Since these improvements, the Department of Transportation reports that total injuries decreased by 18% and crashes with injuries decreased by 24% at this intersection.](images/treatments.png){fig-align="center"}
 :::
 
@@ -683,11 +683,9 @@ g
 
 Our analysis confirms that Vision Zero has had a tangible, positive impact on pedestrian safety, but not all interventions contribute equally. The findings provide a clear mandate for future transportation policy:
 
--   **Prioritize Speed Management:** The most effective way to protect pedestrians is to control vehicle speed. Future investments should be heavily focused on expanding infrastructure like **Neighborhood Slow Zones**, **Turn Traffic Calming**, and **Speed Humps**.
+-   **Prioritize Speed Management and Pedestrian Visbility:** The most effective way to protect pedestrians is to control vehicle speed and enhance pedestrian visbility and crossings. Future investments should be heavily focused on expanding infrastructure like **Neighborhood Slow Zones**, **Turn Traffic Calming**, and **Leading Pedestrian Interval Signals**.
 
--   **Re-evaluate Signal Retiming:** The finding that signal retiming to favor vehicle flow is associated with an *increase* in pedestrian casualties is alarming. Transportation agencies must carefully review this practice and consider pairing it with other proven safety measures.
-
--   **Focus on Systemic, Not Spot, Treatments:** Redesigning an entire street segment (**SIP Corridors**) was effective, while implementing similar projects at a single **intersection** was not. This suggests that creating a consistently safe environment along an entire corridor is more impactful than isolated, spot-based fixes.
+-   **Re-evaluate Non-Significant Interventions:** While out analysis indicated that five of the nine assessed interventions had no significant association with pedestrian casualties, these projects should not be outright abandoned. Instead, policymakers should conduct further investigation to evaluate whether interventions such as **25 MPH Signal Retiming** and **Speed Humps** protect against other kinds of adverse outcomes (e.g., motorist casualties or collisions) or play a role in enhancing efficiency of traffic flow.
 
 Ultimately, this research shows that building a safe transportation system and an efficient one are not conflicting goals. Investments in traffic calming are a core component of an efficient network that is safer and more predictable for all.
 

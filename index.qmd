@@ -136,25 +136,21 @@ Motor vehicle crashes are a leading cause of death and injury in New York City (
 
 ::::::: {.g-col-12 .g-col-md-4}
 :::::: {.callout-note appearance="simple"}
-Key Findings
+## Key Findings
 
-::: key-finding
-<i class="fas fa-car-side" style="color: #2E86C1;"></i> **Speed is Key:** <br> Interventions that physically slow traffic, like **Turn Traffic Calming (-27%)** and **Neighborhood Slow Zones (-21%)**, were most effective.
-:::
+::: {.list-unstyled}
+- <i class="fas fa-car-side" style="color: #2E86C1;"></i> **Speed is Key:** <br> Interventions that physically slow traffic, like **Turn Traffic Calming (-27%)** and **Neighborhood Slow Zones (-21%)**, were most effective.
 
-::: key-finding
-<i class="fas fa-walking" style="color: #27AE60;"></i> **Give Pedestrians a Head Start:** <br> **Leading Pedestrian Interval Signals** were associated with a **13% decrease** in casualties.
-:::
+- <i class="fas fa-walking" style="color: #27AE60;"></i> **Give Pedestrians a Head Start:** <br> **Leading Pedestrian Interval Signals** were associated with a **13% decrease** in casualties.
 
-::: key-finding
-<i class="fas fa-clipboard-list" style="color: #7F8C8D;"></i> **Mixed Results:** <br> Other common treatments showed no significant citywide impact on pedestrian safety.
+- <i class="fas fa-clipboard-list" style="color: #7F8C8D;"></i> **Mixed Results:** <br> Other common treatments showed no significant citywide impact on pedestrian safety.
 :::
 ::::::
 :::::::
 :::::::::
 
 ::: image-panel
-![The Vision Zero Safe System Approach philosophy.](images/safe-system.png){fig-align="center"}
+![The Vision Zero Safe System Approach philosophy.](images/safe-system.png){fig-alt="A circular diagram showing the layers of the Safe System approach, including safer roads, safer speeds, safer vehicles, safer people, and post-crash care." fig-align="center"}
 :::
 
 ### What Are the Vision Zero Interventions?
@@ -167,7 +163,7 @@ intervention_descriptions %>%
   gt() %>%
   fmt_missing(
     columns = everything(),
-    missing_text = "—"
+    missing_text = "<span aria-label='Not applicable'>—</span>"
   ) %>%
   # Apply markdown formatting to all columns (keeps links/bolding if you add them)
   fmt_markdown(columns = everything()) %>%
@@ -198,11 +194,11 @@ intervention_descriptions %>%
 
 ::::: grid
 ::: {.g-col-6 .align-self-center .image-panel}
-![Left turn traffic calming, designed to reduce left turn speeds and enforce safe turning behavior.](images/ttc.jpg){fig-align="center"}
+![Left turn traffic calming, designed to reduce left turn speeds and enforce safe turning behavior.](images/ttc.jpg){fig-alt="A photograph of a New York City intersection treated with left turn traffic calming in the form of a slow turn wedge." fig-align="center"}
 :::
 
 ::: {.g-col-6 .image-panel}
-![Pedestrian warning signage, a major component of enhanced crossings.](images/enhanced-crossings.jpg){fig-align="center"}
+![Pedestrian warning signage, a major component of enhanced crossings.](images/enhanced-crossings.jpg){fig-alt="A photograph of a New York City intersection with an enhanced crossing in the form of high-visibility crosswalk markings and a prominent pedestrian warning sign." fig-align="center"}
 :::
 :::::
 
@@ -450,7 +446,7 @@ g
 :::::
 
 ::: image-panel
-![The Vision Zero task force includes experts from across government agencies who meet on a biweekly basis to discuss upcoming and ongoing interventions.](images/task-force.jpg){fig-align="center" width="50%"}
+![The Vision Zero task force includes experts from across government agencies who meet on a biweekly basis to discuss upcoming and ongoing interventions.](images/task-force.jpg){fig-alt="A photograph of a Vision Zero Task Force meeting in an office." fig-align="center" width="50%"}
 :::
 
 ### Intervention-Specific Rollout
@@ -674,7 +670,7 @@ g
 :::::
 
 ::: image-panel
-![Sheepshead Bay Road in Brooklyn: an example of a complex intersection with multiple Vision Zero interventions applied. Since these improvements, the Department of Transportation reports that total injuries decreased by 18% and crashes with injuries decreased by 24% at this intersection.](images/treatments.png){fig-align="center"}
+![Sheepshead Bay Road in Brooklyn: an example of a complex intersection with multiple Vision Zero interventions applied. Since these improvements, the Department of Transportation reports that total injuries decreased by 18% and crashes with injuries decreased by 24% at this intersection.](images/treatments.png){fig-alt="A photograph of a complex intersection on Sheepshead Bay Road in Brooklyn. This intersection received several Vision Zero intervetnions, including turn traffic calming and enhanced crossing." fig-align="center"}
 :::
 
 ------------------------------------------------------------------------

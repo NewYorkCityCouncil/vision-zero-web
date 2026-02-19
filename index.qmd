@@ -163,7 +163,7 @@ intervention_descriptions %>%
   gt() %>%
   fmt_missing(
     columns = everything(),
-    missing_text = "<span aria-label='Not applicable'>—</span>"
+    missing_text = gt::html("<span aria-label='Not applicable'>—</span>")
   ) %>%
   # Apply markdown formatting to all columns (keeps links/bolding if you add them)
   fmt_markdown(columns = everything()) %>%

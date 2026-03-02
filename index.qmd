@@ -679,7 +679,7 @@ g
 
 Our analysis confirms that Vision Zero has had a tangible, positive impact on pedestrian safety, but not all interventions contribute equally. The findings provide a clear mandate for future transportation policy:
 
--   **Prioritize Speed Management and Pedestrian Visbility:** The most effective way to protect pedestrians is to control vehicle speed and enhance pedestrian visbility and crossings. Future investments should be heavily focused on expanding infrastructure like **Neighborhood Slow Zones**, **Turn Traffic Calming**, and **Leading Pedestrian Interval Signals**.
+-   **Prioritize Speed Management and Pedestrian Visibility:** The most effective way to protect pedestrians is to control vehicle speed and enhance pedestrian visibility at crossings. Future investments should be heavily focused on expanding infrastructure like **Neighborhood Slow Zones**, **Turn Traffic Calming**, and **Leading Pedestrian Interval Signals**.
 
 -   **Re-evaluate Non-Significant Interventions:** While out analysis indicated that five of the nine assessed interventions had no significant association with pedestrian casualties, these projects should not be outright abandoned. Instead, policymakers should conduct further investigation to evaluate whether interventions such as **25 MPH Signal Retiming** and **Speed Humps** protect against other kinds of adverse outcomes (e.g., motorist casualties or collisions) or play a role in enhancing efficiency of traffic flow.
 

@@ -127,27 +127,27 @@ results_with_color <- regression_results_detailed %>%
   )
 ```
 
-::::::::: grid
+::::::: grid
 ::: {.g-col-12 .g-col-md-8}
 # Evaluating the Impact of Vision Zero Interventions on Pedestrian Casualties in NYC (2013-2023)
 
 Motor vehicle crashes are a leading cause of death and injury in New York City (NYC). In 2014, the city adopted the **Vision Zero (VZ)** framework, a comprehensive strategy to eliminate all traffic-related fatalities. The program uses a multi-faceted approach, including infrastructure redesign, lower speed limits, and public awareness campaigns. This analysis evaluates the impact of nine distinct street-level interventions on pedestrian casualties, examining data from 2013 to 2023 and focusing specifically on intersections that received treatments between 2015 and 2021. This approach ensures that every intervention can be evaluated with at least two years of 'before' data and two years of 'after' data, allowing for a robust comparison.
 :::
 
-::::::: {.g-col-12 .g-col-md-4}
-:::::: {.callout-note appearance="simple"}
+::::: {.g-col-12 .g-col-md-4}
+:::: {.callout-note appearance="simple"}
 ## Key Findings
 
-::: {.list-unstyled}
-- <i class="fas fa-car-side" style="color: #2E86C1;"></i> **Speed is Key:** <br> Interventions that physically slow traffic, like **Turn Traffic Calming (-27%)** and **Neighborhood Slow Zones (-21%)**, were most effective.
+::: list-unstyled
+-   <i class="fas fa-car-side" style="color: #2E86C1;"></i> **Speed is Key:** <br> Interventions that physically slow traffic, like **Turn Traffic Calming (-27%)** and **Neighborhood Slow Zones (-21%)**, were most effective.
 
-- <i class="fas fa-walking" style="color: #27AE60;"></i> **Give Pedestrians a Head Start:** <br> **Leading Pedestrian Interval Signals** were associated with a **13% decrease** in casualties.
+-   <i class="fas fa-walking" style="color: #27AE60;"></i> **Give Pedestrians a Head Start:** <br> **Leading Pedestrian Interval Signals** were associated with a **13% decrease** in casualties.
 
-- <i class="fas fa-clipboard-list" style="color: #7F8C8D;"></i> **Mixed Results:** <br> Other common treatments showed no significant citywide impact on pedestrian safety.
+-   <i class="fas fa-clipboard-list" style="color: #7F8C8D;"></i> **Mixed Results:** <br> Other common treatments showed no significant citywide impact on pedestrian safety.
 :::
-::::::
+::::
+:::::
 :::::::
-:::::::::
 
 ::: image-panel
 ![The Vision Zero Safe System Approach philosophy.](images/safe-system.png){fig-alt="A circular diagram showing the layers of the Safe System approach, including safer roads, safer speeds, safer vehicles, safer people, and post-crash care." fig-align="center"}
@@ -202,13 +202,13 @@ intervention_descriptions %>%
 :::
 :::::
 
-### Map of All Vision Zero Interventions
+### Map of All Vision Zero Interventions & Pedestrian Casualties
 
 ::::: grid
 ::: {.g-col-12 .g-col-md-3}
--   The interactive map on the right displays the polygon geometry for every intersection in NYC. Zoom-in and click on any intersection to see a list of the Vision Zero interventions it has received and the year each was first implemented.
+-   The interactive map on the right displays the full Vision Zero history of every intersection in the city. Zoom-in and click on any intersection to see a list of the Vision Zero interventions it has received and the year each was first implemented.
 
--   **Note**: This map displays ALL intersections in the city, including ones which were left out of our statistical modeling.
+-   Alternatively, you could switch to the "Pedestrian Casualties" view to see a choropleth map of pedestrian casualty counts across all NYC intersections between 2013 and 2023.
 :::
 
 ::: {.g-col-12 .g-col-md-9}
@@ -217,8 +217,9 @@ intervention_descriptions %>%
 #| warning: false
 #| message: false
 #| cache: true
+#| out-height: "620px"
 
-# --- Step 1 & 2: Load and Prepare Popup Data ---
+# --- Step 1: Load Base Data ---
 full_geo_data <- read_csv(here::here("data", "input", "intersection_intervention_table_final_w_geo.csv"))
 
 intervention_name_map <- c(
@@ -233,6 +234,7 @@ intervention_name_map <- c(
   "speed_limit_post" = "Citywide Speed Limit Reduction"
 )
 
+# --- Step 2: Build Summaries ---
 popup_summary <- full_geo_data %>%
   select(intersection_id, year, ends_with("_post"), -covid_pre_post) %>%
   pivot_longer(
@@ -244,63 +246,262 @@ popup_summary <- full_geo_data %>%
   group_by(intersection_id, intervention_type) %>%
   summarise(first_year = min(year), .groups = "drop") %>%
   mutate(intervention_name = recode(intervention_type, !!!intervention_name_map)) %>%
-  mutate(popup_line = paste0("<b>", intervention_name, ":</b> ", first_year)) %>%
+  mutate(popup_line = paste0("&bull; <b>", intervention_name, ":</b> ", first_year)) %>%
   group_by(intersection_id) %>%
-  summarise(
-    popup_html = paste0(popup_line, collapse = "<br>")
-  ) %>% 
-  mutate(popup_html = if_else(is.na(popup_html), "No VZ interventions recorded.", popup_html))
+  summarise(popup_html = paste0("<b>Vision Zero History:</b><br>", paste0(popup_line, collapse = "<br>")))
 
-# --- Step 3: Create a unique spatial dataset with Polygons ---
+# --- Step 3: Parse Spatial Data (Points Only) ---
 intersections_sf <- full_geo_data %>%
   select(intersection_id, intersection_geom) %>%
   tidyr::drop_na(intersection_geom) %>%
   distinct(intersection_id, .keep_all = TRUE) %>%
-  st_as_sf(wkt = "intersection_geom", crs = 2263) 
-intersections_sf <- st_simplify(intersections_sf, dTolerance = 1)
-intersections_sf <- st_transform(intersections_sf, crs = 4326)
+  st_as_sf(wkt = "intersection_geom", crs = 2263) %>%
+  st_centroid() %>%
+  st_transform(crs = 4326)
 
-# --- Step 4: Join popup data to the spatial data ---
-intersections_for_map <- intersections_sf %>%
-  left_join(popup_summary, by = "intersection_id")
+# --- Step 4: Prep Data Payload for Fast JS Rendering ---
+coords <- st_coordinates(intersections_sf)
 
-# --- Step 4.5: Create a separate dataset for the circle markers ---
-intersections_centroids <- intersections_for_map %>%
-  st_centroid()
-
-# --- Step 5: Build the Leaflet Map with Correct Data for Each Layer ---
-leaflet() %>%
-  addProviderTiles(providers$CartoDB.Positron, group = "Basemap") %>%
-  setView(lng = -74.00, lat = 40.71, zoom = 11) %>%
-  
-  # Circles Layer - CHANGED TO addCircleMarkers for consistent pixel size
-  addCircleMarkers(
-    data = intersections_centroids,
-    radius = 5, # Radius is now in PIXELS
-    stroke = FALSE,
-    fillColor = "#E37222", 
-    fillOpacity = 0.7,
-    popup = ~popup_html,
-    group = "Overview (Circles)"
-  ) %>%
-  
-  # Polygons layer 
-  addPolygons(
-    data = intersections_for_map,
-    fillColor = "#05014a", 
-    fillOpacity = 0.5,
-    stroke = TRUE,
-    color = "#FFFFFF",
-    weight = 0.5,
-    popup = ~popup_html,
-    group = "Detailed (Shapes)"
-  ) %>%
-  
-  # Layer Control 
-  addLayersControl(
-    baseGroups = c("Overview (Circles)", "Detailed (Shapes)"),
-    options = layersControlOptions(collapsed = FALSE)
+map_data_df <- intersections_sf %>%
+  st_drop_geometry() %>%
+  left_join(popup_summary, by = "intersection_id") %>%
+  mutate(
+    lng = coords[, 1],
+    lat = coords[, 2],
+    popup_html = replace_na(popup_html, "No VZ interventions recorded.")
   )
+
+cas_wide <- vz_data %>%
+  group_by(intersection_id, year) %>%
+  summarise(cas = sum(pedestrian_death_or_injury, na.rm = TRUE), .groups = "drop") %>%
+  pivot_wider(names_from = year, values_from = cas, names_prefix = "yr_") %>%
+  mutate(Total = rowSums(select(., starts_with("yr_")), na.rm = TRUE))
+
+# Use safe snake_case names for JS data transfer
+int_wide <- full_geo_data %>%
+  select(intersection_id, year, ends_with("_post"), -covid_pre_post) %>%
+  pivot_longer(cols = -c(intersection_id, year), names_to = "intervention_type", values_to = "is_active") %>%
+  filter(is_active == 1) %>%
+  group_by(intersection_id, intervention_type) %>%
+  summarise(first_year = min(year), .groups = "drop") %>%
+  pivot_wider(names_from = intervention_type, values_from = first_year)
+
+map_data_df <- map_data_df %>%
+  left_join(cas_wide, by = "intersection_id") %>%
+  left_join(int_wide, by = "intersection_id")
+
+cas_cols <- c("Total", paste0("yr_", 2013:2023))
+for (col in cas_cols) {
+  if (!col %in% names(map_data_df)) map_data_df[[col]] <- 0
+}
+map_data_df <- map_data_df %>% mutate(across(all_of(cas_cols), ~replace_na(.x, 0)))
+
+map_data_list <- purrr::transpose(map_data_df)
+
+# --- Step 5: Render Map and Inject High-Performance Javascript ---
+leaflet(height = 620, width = "100%", options = leafletOptions(zoomControl = FALSE)) %>%
+  addProviderTiles(providers$CartoDB.Positron, group = "Basemap") %>%
+  setView(lng = -73.96, lat = 40.71, zoom = 11) %>%
+  htmlwidgets::onRender("
+    function(el, x, data) {
+      var map = this;
+      
+      // Move zoom control to top right
+      L.control.zoom({ position: 'topright' }).addTo(map);
+
+      // === UI SETUP: Collapsible Floating Dashboard (Top Left) ===
+      var controlDiv = L.DomUtil.create('div', 'custom-map-control');
+      controlDiv.style.backgroundColor = 'rgba(255, 255, 255, 0.97)';
+      controlDiv.style.padding = '12px 16px';
+      controlDiv.style.borderRadius = '8px';
+      controlDiv.style.boxShadow = '0 4px 15px rgba(0,0,0,0.15)';
+      controlDiv.style.border = '1px solid #d1e3e3';
+      controlDiv.style.fontFamily = '\"Helvetica Neue\", Arial, sans-serif';
+      controlDiv.style.color = '#333';
+      controlDiv.style.width = '290px';
+      
+      L.DomEvent.disableClickPropagation(controlDiv);
+      L.DomEvent.disableScrollPropagation(controlDiv);
+
+      var uiHtml = `
+        <div id='control-toggle' style='cursor:pointer; display:flex; justify-content:space-between; align-items:center; font-weight:bold; font-size:1.1rem; color:#05014a;'>
+          <span><i class='fas fa-sliders-h'></i> Map Controls</span>
+          <span id='toggle-icon'>▶</span> 
+        </div>
+        
+        <div id='control-content' style='display:none; margin-top:15px; max-height:400px; overflow-y:auto; overflow-x:hidden; padding-right:10px;'>
+           <strong style='display:block; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:4px; font-size:0.95rem;'>View Mode</strong>
+           <label style='display:block; cursor:pointer; margin-bottom:6px; font-size:0.9rem;'><input type='radio' name='mapMode' value='interventions' checked> 🚧 VZ Interventions</label>
+           <label style='display:block; cursor:pointer; margin-bottom:15px; font-size:0.9rem;'><input type='radio' name='mapMode' value='casualties'> 💥 Pedestrian Casualties</label>
+           
+           <div id='ctrl-interventions'>
+             <strong style='display:block; margin-bottom:4px; border-bottom:1px solid #eee; padding-bottom:4px; font-size:0.95rem;'>Filter Interventions</strong>
+             <div style='font-size:0.8rem; color:#666; margin-bottom:10px;'>Check multiple to view overlaps.</div>
+             <div id='interventionCheckboxes' style='display:flex; flex-direction:column; gap:8px;'></div>
+             
+             <div style='margin-top:15px; font-size:0.85rem; background:#f9f9f9; padding:8px 10px; border-radius:6px; border-left:4px solid #FF1493;'>
+               <span style='display:inline-block; width:10px; height:10px; background:#FF1493; border-radius:50%; margin-right:4px;'></span> <b>Multiple Selected</b>
+             </div>
+           </div>
+
+           <div id='ctrl-casualties' style='display:none;'>
+             <strong style='display:block; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:4px; font-size:0.95rem;'>Select Year</strong>
+             <select id='yearSelect' class='form-select' style='width:100%; padding:6px; border-radius:4px; border:1px solid #ccc; font-size:0.9rem; margin-bottom:15px;'>
+               <option value='Total'>11-Year Total (2013-2023)</option>
+               ${Array.from({length: 11}, (v, i) => 2023 - i).map(y => `<option value='yr_${y}'>${y}</option>`).join('')}
+             </select>
+             
+             <div style='font-size:0.85rem; background:#f9f9f9; padding:10px; border-radius:6px;'>
+               <strong style='display:block; margin-bottom:8px;'>Casualties Legend</strong>
+               <div style='display:flex; align-items:center; margin-bottom:4px;'><span style='width:12px; height:12px; background:#cccccc; border-radius:50%; margin-right:8px;'></span> 0 (None)</div>
+               <div style='display:flex; align-items:center; margin-bottom:4px;'><span style='width:12px; height:12px; background:#ffffb2; border-radius:50%; margin-right:8px;'></span> Low</div>
+               <div style='display:flex; align-items:center; margin-bottom:4px;'><span style='width:12px; height:12px; background:#fd8d3c; border-radius:50%; margin-right:8px;'></span> Medium</div>
+               <div style='display:flex; align-items:center;'><span style='width:12px; height:12px; background:#bd0026; border-radius:50%; margin-right:8px;'></span> High</div>
+             </div>
+           </div>
+        </div>
+      `;
+      controlDiv.innerHTML = uiHtml;
+
+      // Add collapsible toggle functionality
+      var toggleBtn = controlDiv.querySelector('#control-toggle');
+      var contentDiv = controlDiv.querySelector('#control-content');
+      var toggleIcon = controlDiv.querySelector('#toggle-icon');
+      
+      toggleBtn.addEventListener('click', function() {
+         if (contentDiv.style.display === 'none') {
+             contentDiv.style.display = 'block';
+             toggleIcon.innerText = '▼';
+         } else {
+             contentDiv.style.display = 'none';
+             toggleIcon.innerText = '▶';
+         }
+      });
+
+      // Inject dashboard into TOP LEFT of map
+      var customControl = L.control({position: 'topleft'});
+      customControl.onAdd = function() { return controlDiv; };
+      customControl.addTo(map);
+
+      // === CONFIGURATION & COLORS ===
+      var intMap = {
+        'leading_pedestrian_interval_post': { name: 'Leading Pedestrian Interval', color: '#2ca25f' },
+        'turn_traffic_calming_post': { name: 'Turn Traffic Calming', color: '#984EA3' }, 
+        'enhanced_crossing_post': { name: 'Enhanced Crossing', color: '#56B4E9' },
+        'speed_humps_post': { name: 'Speed Humps', color: '#F0E442' },
+        'street_improvement_project_post': { name: 'SIP Intersection', color: '#0072B2' },
+        'street_improvement_corridors_post': { name: 'SIP Corridor', color: '#D55E00' },
+        'signal_retiming_post': { name: '25 MPH Signal Retiming', color: '#CC79A7' },
+        'slow_zones_post': { name: 'Neighborhood Slow Zone', color: '#999999' },
+        'speed_limit_post': { name: 'Citywide Speed Limit Reduction', color: '#05014a' }
+      };
+      
+      var specialColor = '#FF1493'; // Hot Pink
+
+      function getCasColor(d, isTotal) {
+         if (d === 0) return '#cccccc';
+         if (isTotal) {
+            return d >= 15 ? '#bd0026' : d >= 8 ? '#f03b20' : d >= 3 ? '#fd8d3c' : d >= 1 ? '#fecc5c' : '#ffffb2';
+         } else {
+            return d >= 4 ? '#bd0026' : d >= 3 ? '#f03b20' : d >= 2 ? '#fd8d3c' : d >= 1 ? '#fecc5c' : '#ffffb2';
+         }
+      }
+
+      var chkContainer = document.getElementById('interventionCheckboxes');
+      Object.keys(intMap).forEach(function(key) {
+         var config = intMap[key];
+         var lbl = document.createElement('label');
+         lbl.style.cursor = 'pointer'; lbl.style.fontSize = '0.85rem'; lbl.style.display = 'flex'; lbl.style.alignItems = 'center';
+         lbl.innerHTML = `<input type='checkbox' class='int-cb' value='${key}' style='margin-right:8px;'> <span style='display:inline-block; width:12px; height:12px; background:${config.color}; border-radius:50%; margin-right:8px;'></span> ${config.name}`;
+         chkContainer.appendChild(lbl);
+      });
+
+      // === INITIALIZE CANVAS MARKERS ===
+      var canvasRenderer = L.canvas({ padding: 0.5 });
+      var markers = [];
+
+      data.forEach(function(d) {
+         var m = L.circleMarker([d.lat, d.lng], { renderer: canvasRenderer }).bindPopup('Loading...');
+         m.featureData = d;
+         m.addTo(map);
+         markers.push(m);
+      });
+
+      // === UPDATE LOGIC ===
+      window.updateMap = function() {
+         var mode = document.querySelector('input[name=\"mapMode\"]:checked').value;
+         document.getElementById('ctrl-casualties').style.display = (mode === 'casualties') ? 'block' : 'none';
+         document.getElementById('ctrl-interventions').style.display = (mode === 'interventions') ? 'block' : 'none';
+
+         var yearField = document.getElementById('yearSelect').value;
+         var selectedInts = Array.from(document.querySelectorAll('.int-cb:checked')).map(cb => cb.value);
+
+         var markersToFront = [];
+
+         markers.forEach(function(m) {
+            var d = m.featureData;
+            m.setPopupContent(d.popup_html); // Always show complete popup history
+            
+            if (mode === 'casualties') {
+               var val = d[yearField] || 0;
+               var isTot = (yearField === 'Total');
+               var popYr = isTot ? 'Total 2013-2023' : yearField.replace('yr_', '');
+               
+               if (val === 0) {
+                  m.setStyle({ radius: 3, fillColor: '#cccccc', fillOpacity: 0.3, stroke: false });
+               } else {
+                  var r = isTot ? (val > 10 ? 8 : val > 5 ? 6 : 4) : (val > 3 ? 8 : val > 1 ? 6 : 4);
+                  m.setStyle({ radius: r, fillColor: getCasColor(val, isTot), fillOpacity: 0.8, stroke: true, color: '#444', weight: 0.5 });
+               }
+               m.setPopupContent(`<b>Pedestrian Casualties (${popYr}):</b> ${val}<br><hr style='margin:5px 0;'>${d.popup_html}`);
+
+            } else { 
+               // Interventions View
+               if (selectedInts.length === 0) {
+                  // Overview (All Interventions)
+                  m.setStyle({ radius: 4, fillColor: '#E37222', fillOpacity: 0.5, stroke: false });
+               } else {
+                  // Filtered Logic using safe snake_case keys
+                  var matchCount = 0;
+                  var singleMatchKey = '';
+                  
+                  selectedInts.forEach(function(key) {
+                     if (d[key] !== null && d[key] !== undefined) {
+                         matchCount++;
+                         singleMatchKey = key;
+                     }
+                  });
+
+                  if (matchCount === 0) {
+                     // Hide intersections that don't have ANY of the selected
+                     m.setStyle({ radius: 0, fillOpacity: 0, stroke: false });
+                  } else if (matchCount === 1) {
+                     // Exactly one matched intervention
+                     m.setStyle({ radius: 5, fillColor: intMap[singleMatchKey].color, fillOpacity: 0.9, stroke: true, color: '#fff', weight: 1 });
+                  } else {
+                     // Multiple matches = Hot Pink Override
+                     m.setStyle({ radius: 7, fillColor: specialColor, fillOpacity: 1.0, stroke: true, color: '#fff', weight: 1.5 });
+                     markersToFront.push(m);
+                  }
+               }
+            }
+         });
+         
+         // Safely bring pink markers to the front of the canvas
+         markersToFront.forEach(function(m) {
+             try { m.bringToFront(); } catch(e) {}
+         });
+      };
+
+      // Listeners
+      document.querySelectorAll('input[name=\"mapMode\"]').forEach(r => r.addEventListener('change', updateMap));
+      document.getElementById('yearSelect').addEventListener('change', updateMap);
+      document.querySelectorAll('.int-cb').forEach(cb => cb.addEventListener('change', updateMap));
+
+      // Init
+      updateMap();
+    }
+  ", data = map_data_list)
 ```
 :::
 :::::

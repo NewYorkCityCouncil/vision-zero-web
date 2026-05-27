@@ -891,3 +891,16 @@ Ultimately, this research shows that building a safe transportation system and a
 This analysis was conducted by the NYC Council Data Team using publicly available data from [NYC Open Data](https://opendata.cityofnewyork.us/), including datasets from the NYPD and the Department of Transportation. The full methodology is detailed in our to-be-published manuscript.
 
 While our statistical model controls for many factors, traffic safety is incredibly complex. The findings represent our best estimate of the impact of these specific interventions, but other unmeasured factors could also play a role.
+
+:::{style="font-family: 'Inter', sans-serif; font-size: 1.1rem; color: #333333; margin-top: 2rem;"}
+
+<p style="margin-bottom: 1.25rem;">
+  <span style="color: #1a4c82; margin-right: 6px; font-size: 1.2rem;">{{< fa comments >}}</span> 
+  For feedback, comments, and questions please email <a href="mailto:DataInfo@council.nyc.gov" style="color: #1a4c82; font-weight: 700; text-decoration: none;">DataInfo@council.nyc.gov</a>.
+</p>
+
+<p>
+  Created by the <a href="https://council.nyc.gov/data/" style="color: #1a4c82; font-weight: 700; text-decoration: none;">NYC Council Data Team</a>.
+</p>
+
+:::

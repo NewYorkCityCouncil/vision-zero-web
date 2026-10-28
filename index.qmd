@@ -299,8 +299,18 @@ map_data_df <- map_data_df %>% mutate(across(all_of(cas_cols), ~replace_na(.x, 0
 map_data_list <- purrr::transpose(map_data_df)
 
 # --- Step 5: Render Map and Inject High-Performance Javascript ---
+carto_api_key <- Sys.getenv("CARTO_API_KEY")
+
 leaflet(height = 620, width = "100%", options = leafletOptions(zoomControl = FALSE)) %>%
-  addProviderTiles(providers$CartoDB.Positron, group = "Basemap") %>%
+  addTiles(
+    urlTemplate = paste0(
+      "https://basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}.png?key=",
+      carto_api_key
+    ),
+    attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution/">CARTO</a>',
+    group = "Basemap",
+    options = tileOptions(maxZoom = 20)
+  ) %>%
   setView(lng = -73.96, lat = 40.71, zoom = 11) %>%
   htmlwidgets::onRender("
     function(el, x, data) {
